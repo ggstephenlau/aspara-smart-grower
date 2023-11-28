@@ -19,7 +19,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
     <img src="./pngs/proj_ext_b4.png" width=114 height=245>
 
-* Enter "<I><B>https://github.com/ggstephenlau/aspara-stylist</B></I>" and search
+* Enter "<I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension</B></I>" and search
 
     <img src="./pngs/proj_ext_search.png" width=600 height=190>
 
@@ -37,7 +37,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
 ## How to use the extension
 ### On start - assign an unique microbit ID for the project
-* Add <I><U>"start aspara Stylist service with microbit ID"</U></I> from the aspara Stylist extension to the block <I><U>"on start"</U></I>
+* Add <I><U>"start aspara Smart Grower service with microbit ID"</U></I> from the aspara Stylist extension to the block <I><U>"on start"</U></I>
 * Enter an ID for this project.
 * E.g.
 
@@ -101,12 +101,19 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 * Download and Run the project.
 * Use the aspara STEM app to pair the aspara Smart Grower and aspara Wireless Planting Sensor with the micro:bit.
 
-## Sample micro:bit projects using aspara Stylist extension
-### Following are aspara Stylist microbit projects which could be imported to the microbit makecode editor for demo purposes.
-* <I><B>https://github.com/ggstephenlau/aspara-stylist/example/aspara-simple-demo</B></I>
-* <I><B>https://github.com/ggstephenlau/aspara-stylist/example/aspara-demo</B></I>
-* <I><B>https://github.com/ggstephenlau/aspara-stylist/example/aspara-planting-demo</B></I>
+## Sample micro:bit projects using aspara Smart Grower extension
+### Following are aspara Smart Grower microbit projects which could be imported to the microbit makecode editor for demo purposes.
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-simple-demo</B></I>
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-demo</B></I>
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-planting-demo</B></I>
+
+## Reminder
+
+* Works with <I><B><U>micro:bit V2</U></B></I> hardware only
+
+## Supported targets
+* for PXT/microbit
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+* [MIT](https://choosealicense.com/licenses/mit/)
