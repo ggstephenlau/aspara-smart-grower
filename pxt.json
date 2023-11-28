@@ -1,0 +1,32 @@
+{
+    "name": "aspara-stylist",
+    "version": "1.1.7",
+    "description": "The aspara Stylist extension. micro:bit (V2) only.",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "bluetooth": "*"
+    },
+    "files": [
+        "enums.d.ts",
+        "shims.d.ts",
+        "debug.h",
+        "aspara-stylist-service.cpp",
+        "aspara-stylist-service.h",
+        "aspara-stylist.cpp",
+        "aspara-stylist.ts"
+    ],
+    "public": true,
+    "targetVersions": {
+        "target": "5.0.12",
+        "targetId": "microbit"
+    },
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj",
+    "icon": "icon.png",
+    "disablesVariants": [
+        "mbdal"
+    ]
+}
