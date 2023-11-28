@@ -107,3 +107,6 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 * <I><B>https://github.com/ggstephenlau/aspara-stylist/example/aspara-demo</B></I>
 * <I><B>https://github.com/ggstephenlau/aspara-stylist/example/aspara-planting-demo</B></I>
 
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
