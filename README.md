@@ -27,17 +27,17 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
     <img src= "./pngs/proj_ext_result.png" width=111 height=125>
 
-* Select <I>"Remvoe extension(s) and add aspara-stylist"</I> if a pop-up appears with the message <I>"Some extensions will be removed"</I>
+* Select <I>"Remvoe extension(s) and add aspara-smart-grower"</I> if a pop-up appears with the message <I>"Some extensions will be removed"</I>
 
     <img src="./pngs/proj_ext_popup.png" width=360 height=107>
 
-* <I>"aspara Stylist"</I> will show up in the editor and be ready to use.
+* <I>"aspara Smart Grower"</I> will show up in the editor and be ready to use.
 
     <img src="./pngs/proj_ext_complete.png" width=110 height=129 >
 
 ## How to use the extension
 ### On start - assign an unique microbit ID for the project
-* Add <I><U>"start aspara Smart Grower service with microbit ID"</U></I> from the aspara Stylist extension to the block <I><U>"on start"</U></I>
+* Add <I><U>"start aspara Smart Grower service with microbit ID"</U></I> from the aspara Smart Grower extension to the block <I><U>"on start"</U></I>
 * Enter an ID for this project.
 * E.g.
 
@@ -72,23 +72,23 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
     <img src="./pngs/block_data_pump_state.png" width=195 height=48/>
 
-* Room temperature (°C) from wireless planting sensor
+* Room temperature (°C) from aspara Wireless Planting Sensor
 
     <img src="./pngs/block_data_temperature.png" width=171 height=41/>
     
-* Relative humidity (%) from wireless planting sensor
+* Relative humidity (%) from aspara Wireless Planting Sensor
 
     <img src="./pngs/block_data_humidity.png" width=208 height=40/>
 
-* Light intensity (Lux) from wireless planting sensor
+* Light intensity (Lux) from aspara Wireless Planting Sensor
 
     <img src="./pngs/block_data_light_intensity.png" width=212 height=41/>
 
-* Nutrient level (μS/cm) from wireless planting sensor.
+* Nutrient level (μS/cm) from aspara Wireless Planting Sensor.
 
     <img src="./pngs/block_data_nutrient_level.png" width=217 height=40/>
 
-* Battery level from wireless planting sensor
+* Battery level from aspara Wireless Planting Sensor
 
     <img src="./pngs/block_data_battery_level.png" width=175 height=44/>
 
