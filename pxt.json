@@ -1,7 +1,7 @@
 {
-    "name": "aspara-stylist",
+    "name": "aspara-smart-grower",
     "version": "1.1.7",
-    "description": "The aspara Stylist extension. micro:bit (V2) only.",
+    "description": "The aspara Smart Grower extension. micro:bit (V2) only.",
     "license": "MIT",
     "dependencies": {
         "core": "*",
@@ -11,10 +11,10 @@
         "enums.d.ts",
         "shims.d.ts",
         "debug.h",
-        "aspara-stylist-service.cpp",
-        "aspara-stylist-service.h",
-        "aspara-stylist.cpp",
-        "aspara-stylist.ts"
+        "aspara-smart-grower-service.cpp",
+        "aspara-smart-grower-service.h",
+        "aspara-smart-grower.cpp",
+        "aspara-smart-grower.ts"
     ],
     "public": true,
     "targetVersions": {

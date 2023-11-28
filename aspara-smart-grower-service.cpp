@@ -1,7 +1,7 @@
 
 #include "MicroBitConfig.h"
 
-#include "aspara-stylist-service.h"
+#include "aspara-smart-grower-service.h"
 #include "ble_srv_common.h"
 
 #include "pxt.h"
@@ -24,23 +24,23 @@
 using namespace pxt;
 
 //////////////// Initialize static members
-const uint8_t asparaStylistService::base_uuid[16] = {0x4e, 0x70, 0x09, 0x30, 0xcf, 0x94, 0x43, 0x60, 0xab, 0x39, 0xc1, 0x0e, 0xdd, 0x41, 0xc9, 0xf1};
-const uint16_t asparaStylistService::serviceId = 0x0930; 
-const uint16_t asparaStylistService::charUUID[asparaCharCount] = {  
+const uint8_t asparaSmartGrowerService::base_uuid[16] = {0x4e, 0x70, 0x09, 0x30, 0xcf, 0x94, 0x43, 0x60, 0xab, 0x39, 0xc1, 0x0e, 0xdd, 0x41, 0xc9, 0xf1};
+const uint16_t asparaSmartGrowerService::serviceId = 0x0930; 
+const uint16_t asparaSmartGrowerService::charUUID[asparaCharCount] = {  
   0x0939,  //  Device status
   0x093d   //  Device Command
 };
 
-// const uint8_t asparaStylistService::stylistCmdHeader[2] = {0xBB, 0xB0};
+// const uint8_t asparaSmartGrowerService::smartGrowerCmdHeader[2] = {0xBB, 0xB0};
 
-asparaStylistService *asparaStylistService::service = NULL; // Singleton reference to the service
+asparaSmartGrowerService *asparaSmartGrowerService::service = NULL; // Singleton reference to the service
 
 // Static method for peer_manager events (Bounce it to the instance, which has access to member vars)
-void asparaStylistService::static_pm_events(const pm_evt_t* p_event) {
+void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
   getInstance()->pm_events(p_event);
 }
 
-void asparaStylistService::pm_events(const pm_evt_t* p_event) {
+void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
   if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
     for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
 
@@ -59,18 +59,18 @@ void asparaStylistService::pm_events(const pm_evt_t* p_event) {
 
 /**
  */
-asparaStylistService *asparaStylistService::getInstance()
+asparaSmartGrowerService *asparaSmartGrowerService::getInstance()
 {
     if (service == NULL)
     {
-        service = new asparaStylistService();
+        service = new asparaSmartGrowerService();
     }
     return service;
 }
 
 void onConnected(MicroBitEvent)
 {
-  asparaStylistService *ins = asparaStylistService::getInstance();
+  asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
   if (ins) {
     ins->ubitBLEConnected = true;
     ins->connectedTimeMark = system_timer_current_time();
@@ -79,14 +79,14 @@ void onConnected(MicroBitEvent)
 
 void onDisconnected(MicroBitEvent)
 {
-  asparaStylistService *ins = asparaStylistService::getInstance();
+  asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
   if (ins) {
     ins->ubitBLEConnected = false;
     ins->connectedTimeMark = system_timer_current_time();
   }
 }
 
-bool asparaStylistService::IsBleConnected() {
+bool asparaSmartGrowerService::IsBleConnected() {
   if (serviceBLEConnected && ubitBLEConnected) {
     if ((system_timer_current_time() - connectedTimeMark) > 2000) {
       return true;
@@ -102,10 +102,10 @@ bool asparaStylistService::IsBleConnected() {
  * Constructor.
  * Create a representation of the Bluetooth SIG HID Service
  */
-asparaStylistService::asparaStylistService()
+asparaSmartGrowerService::asparaSmartGrowerService()
 {
 #if DEBUG_ENABLED == 1
-  DEBUG("\r\nasparaStylistService starting\r\n");
+  DEBUG("\r\nasparaSmartGrowerService starting\r\n");
   DEBUG("\r\nVer: %d.%d.%d\r\n", VERSION, VER_MAJOR, VER_MINOR);
 #endif
   deviceTimeMark = 0;
@@ -117,7 +117,7 @@ asparaStylistService::asparaStylistService()
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
-  stylistStartAdvertise();
+  smartGrowerStartAdvertise();
 
   RegisterBaseUUID(base_uuid);
 
@@ -149,28 +149,28 @@ asparaStylistService::asparaStylistService()
 /**
   * Invoked when BLE connects.
   */
-void asparaStylistService::onConnect( const microbit_ble_evt_t *p_ble_evt)
+void asparaSmartGrowerService::onConnect( const microbit_ble_evt_t *p_ble_evt)
 {
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonConnec\r\n");
 #endif
   serviceBLEConnected = true;
-  stylistStopAdvertise();
+  smartGrowerStopAdvertise();
 }
 
 /**
   * Invoked when BLE disconnects.
   */
-void asparaStylistService::onDisconnect( const microbit_ble_evt_t *p_ble_evt)
+void asparaSmartGrowerService::onDisconnect( const microbit_ble_evt_t *p_ble_evt)
 {
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDisconnec\r\n");
 #endif
   serviceBLEConnected = false;
-  stylistStartAdvertise();
+  smartGrowerStartAdvertise();
 }
 
-void asparaStylistService::onDataRead( microbit_onDataRead_t *params) {
+void asparaSmartGrowerService::onDataRead( microbit_onDataRead_t *params) {
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDataRead\r\n");
 #endif
@@ -179,7 +179,7 @@ void asparaStylistService::onDataRead( microbit_onDataRead_t *params) {
 /**
   * Callback. Invoked when any of our attributes are written via BLE.
   */
-void asparaStylistService::onDataWritten( const microbit_ble_evt_write_t *params)
+void asparaSmartGrowerService::onDataWritten( const microbit_ble_evt_write_t *params)
 {
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDataWritten uuid: %X     len:%d", params->uuid.uuid, params->len);
@@ -192,7 +192,7 @@ void asparaStylistService::onDataWritten( const microbit_ble_evt_write_t *params
   }
   DEBUG("\r\n");
 #endif
-  if (params->uuid.uuid == asparaStylistService::charUUID[asparaCharControlStatus]) {
+  if (params->uuid.uuid == asparaSmartGrowerService::charUUID[asparaCharControlStatus]) {
     if (params->data[0] == 0xE3) {
       memcpy(intensityCmd, params->data, params->len);
     } else if (params->data[0] == 0xE5) {
@@ -223,15 +223,15 @@ void asparaStylistService::onDataWritten( const microbit_ble_evt_write_t *params
   }
 }
 
-bool asparaStylistService::onBleEvent(const microbit_ble_evt_t *p_ble_evt) {
+bool asparaSmartGrowerService::onBleEvent(const microbit_ble_evt_t *p_ble_evt) {
   return MicroBitBLEService::onBleEvent(p_ble_evt);
 }
 
-bool asparaStylistService::notifyChrValue( int idx, const uint8_t *data, uint16_t length) {
+bool asparaSmartGrowerService::notifyChrValue( int idx, const uint8_t *data, uint16_t length) {
   return MicroBitBLEService::notifyChrValue( idx, data, length);
 }
 
-void asparaStylistService::setName() {
+void asparaSmartGrowerService::setName() {
   int len = strlen(assignName);
   memcpy(gapName, assignName, strlen(assignName)+1);
   ble_gap_conn_sec_mode_t permissions;
@@ -239,9 +239,9 @@ void asparaStylistService::setName() {
   MICROBIT_BLE_ECHK( sd_ble_gap_device_name_set( &permissions, (const unsigned char*)gapName, len) );
 }
 
-void asparaStylistService::stylistStartAdvertise() {
+void asparaSmartGrowerService::smartGrowerStartAdvertise() {
   // Stop any active advertising
-  stylistStopAdvertise();
+  smartGrowerStopAdvertise();
   setName();
   // m_advdata _must_ be static / retained!
   static ble_advdata_t m_advdata;
@@ -296,7 +296,7 @@ void asparaStylistService::stylistStartAdvertise() {
 #endif
 } 
 
-void asparaStylistService::stylistStopAdvertise() {
+void asparaSmartGrowerService::smartGrowerStopAdvertise() {
   if (advertising) {
     uBit.bleManager.stopAdvertising();
     advertising = false;
@@ -306,21 +306,21 @@ void asparaStylistService::stylistStopAdvertise() {
   }
 }
 
-void asparaStylistService::setBroadcastName(const char *name) {
+void asparaSmartGrowerService::setBroadcastName(const char *name) {
   int len = strlen(name) > sizeof(assignName) - 1 ? sizeof(assignName) - 1 : strlen(name);
 
   memset(assignName, 0, sizeof(assignName));
   memcpy(assignName, name, len);
   if (advertising) {
-    stylistStartAdvertise();
+    smartGrowerStartAdvertise();
   }
 }
 
-void asparaStylistService::stylistSendCmd(uint8_t *cmd, uint8_t len) {
+void asparaSmartGrowerService::smartGrowerSendCmd(uint8_t *cmd, uint8_t len) {
   uint8_t i = 1;
 
-  // memcpy(&buffer[i], stylistCmdHeader, sizeof(stylistCmdHeader));
-  // i += sizeof(stylistCmdHeader);
+  // memcpy(&buffer[i], smartGrowerCmdHeader, sizeof(smartGrowerCmdHeader));
+  // i += sizeof(smartGrowerCmdHeader);
   memcpy(&buffer[i], cmd, len);
   buffer[0] = i + len;
 #if DEBUG_ENABLED == 1
@@ -336,7 +336,7 @@ void asparaStylistService::stylistSendCmd(uint8_t *cmd, uint8_t len) {
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getLedIntensity(uint8_t *cmd) {
+void asparaSmartGrowerService::getLedIntensity(uint8_t *cmd) {
   intensityCmd = cmd;
   buffer[0] = 3;
   buffer[1] = cmd[0];
@@ -344,49 +344,49 @@ void asparaStylistService::getLedIntensity(uint8_t *cmd) {
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getTemperature(uint8_t *cmd) {
+void asparaSmartGrowerService::getTemperature(uint8_t *cmd) {
   tempCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getHumidity(uint8_t *cmd) {
+void asparaSmartGrowerService::getHumidity(uint8_t *cmd) {
   humiCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getLightSensor(uint8_t *cmd) {
+void asparaSmartGrowerService::getLightSensor(uint8_t *cmd) {
   lightSensorCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getNutrient(uint8_t *cmd) {
+void asparaSmartGrowerService::getNutrient(uint8_t *cmd) {
   nutrientCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getBattery(uint8_t *cmd) {
+void asparaSmartGrowerService::getBattery(uint8_t *cmd) {
   batteryCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getWaterLevel(uint8_t *cmd) {
+void asparaSmartGrowerService::getWaterLevel(uint8_t *cmd) {
   waterlevelCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getIndicatorState(uint8_t *cmd) {
+void asparaSmartGrowerService::getIndicatorState(uint8_t *cmd) {
   indicatorCmd = cmd;
   buffer[0] = 3;
   buffer[1] = cmd[0];
@@ -394,14 +394,14 @@ void asparaStylistService::getIndicatorState(uint8_t *cmd) {
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getPumpState(uint8_t *cmd) {
+void asparaSmartGrowerService::getPumpState(uint8_t *cmd) {
   pumpCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];
   notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
 }
 
-void asparaStylistService::getRtc(uint8_t *cmd) {
+void asparaSmartGrowerService::getRtc(uint8_t *cmd) {
   rtcCmd = cmd;
   buffer[0] = 2;
   buffer[1] = cmd[0];

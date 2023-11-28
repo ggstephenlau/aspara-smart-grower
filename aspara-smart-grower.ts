@@ -30,21 +30,21 @@ enum INDICATOR_TYPE
 } INDICATOR_TYPE;
 
 /**
- * Aspara Stylist
+ * aspara Smart Grower
  */
-//% block="aspara Stylist"
+//% block="aspara Smart Grower"
 //% icon="\uf06c"
 //% color="#00AAA0"
-namespace asparaStylist {
+namespace asparaSmartGrower {
 
   /**
-   * Start the Aspara Stylist service
+   * Start the aspara Smart Grower service
    */
-  //% block="start aspara Stylist service with microbit ID: %id"
+  //% block="start aspara Smart Grower service with microbit ID: %id"
   //% id.min=0 id.max=99999
   //% weight=99
-  //% shim=asparaStylist::startAsparaStylistService
-  export function startAsparaStylistService(id: number): void {
+  //% shim=asparaSmartGrower::startAsparaSmartGrowerService
+  export function startAsparaSmartGrowerService(id: number): void {
     return;
   }
 
@@ -54,7 +54,7 @@ namespace asparaStylist {
   //% block="set |%ledtype| LED intensity to |%intensity|"
   //% intensity.min=0 intensity.max=100
   //% weight=95
-  //% shim=asparaStylist::setLEDlight
+  //% shim=asparaSmartGrower::setLEDlight
   export function setLEDlight(ledtype: LED_TYPE, intensity: number): void {
     return;
   }
@@ -64,7 +64,7 @@ namespace asparaStylist {
    */
   //% block="set |%indicatortype| to |%onoff|"
   //% weight=90
-  //% shim=asparaStylist::setIndicator
+  //% shim=asparaSmartGrower::setIndicator
   export function setIndicator(indicatortype: INDICATOR_TYPE, onoff: ON_OFF): void {
     return;
   }
@@ -74,7 +74,7 @@ namespace asparaStylist {
    */
   //% block="set pump |%onoff|"
   //% weight=85
-  //% shim=asparaStylist::setPump
+  //% shim=asparaSmartGrower::setPump
   export function setPump(onoff: ON_OFF): void {
     return;
   }
@@ -84,7 +84,7 @@ namespace asparaStylist {
    */
   //% block="play a |%duration| beep"
   //% weight=80
-  //% shim=asparaStylist::beep
+  //% shim=asparaSmartGrower::beep
   export function beep(duration: DURATION): void {
     return;
   }
@@ -95,7 +95,7 @@ namespace asparaStylist {
   //% block="set LEDs to |White %white|Red %red|Blue %blue|"
   //% white.min=0 white.max=100 red.min=0 red.max=100 blue.min=0 blue.max=100
   //% weight=75
-  //% shim=asparaStylist::setLEDlights
+  //% shim=asparaSmartGrower::setLEDlights
   // export function setLEDlights(white: number, red: number, blue: number): void {
   //   return;
   // }
@@ -105,7 +105,7 @@ namespace asparaStylist {
    */
   //% block="intensity of |%ledtype| LED"
   //% weight=70
-  //% shim=asparaStylist::ledIntensity
+  //% shim=asparaSmartGrower::ledIntensity
   export function ledIntensity(ledtype: LED_TYPE): number {
     return 0;
   }
@@ -115,7 +115,7 @@ namespace asparaStylist {
    */
   //% block="state of |%indicatortype|"
   //% weight=65
-  //% shim=asparaStylist::indicatorState
+  //% shim=asparaSmartGrower::indicatorState
   export function indicatorState(indicatortype: INDICATOR_TYPE): number {
     return 0;
   }
@@ -125,7 +125,7 @@ namespace asparaStylist {
    */
   //% block="pump state (on/off)"
   //% weight=60
-  //% shim=asparaStylist::pumpState
+  //% shim=asparaSmartGrower::pumpState
   export function pumpState(): number {
     return 0;
   }
@@ -135,7 +135,7 @@ namespace asparaStylist {
    */
   //% block="temperature (°C)"
   //% weight=55
-  //% shim=asparaStylist::temperature
+  //% shim=asparaSmartGrower::temperature
   export function temperature(): number {
     return 21.5;
   }
@@ -145,7 +145,7 @@ namespace asparaStylist {
    */
   //% block="humidity (percentage)"
   //% weight=50
-  //% shim=asparaStylist::humidity
+  //% shim=asparaSmartGrower::humidity
   export function humidity(): number {
     return 75;
   }
@@ -155,7 +155,7 @@ namespace asparaStylist {
    */
   //% block="light intensity (Lux)"
   //% weight=45
-  //% shim=asparaStylist::lightsensor
+  //% shim=asparaSmartGrower::lightsensor
   export function lightsensor(): number {
     return 200;
   }
@@ -165,7 +165,7 @@ namespace asparaStylist {
    */
   //% block="nutrient level (µS/cm)"
   //% weight=40
-  //% shim=asparaStylist::nutrient
+  //% shim=asparaSmartGrower::nutrient
   export function nutrient(): number {
     return 1400;
   }
@@ -175,7 +175,7 @@ namespace asparaStylist {
    */
   //% block="battery level (V)"
   //% weight=35
-  //% shim=asparaStylist::battery
+  //% shim=asparaSmartGrower::battery
   export function battery(): number {
     return 2.5;
   }
@@ -185,7 +185,7 @@ namespace asparaStylist {
    */
   //% block="water level (Nil/Full/Low)"
   //% weight=30
-  //% shim=asparaStylist::waterlevel
+  //% shim=asparaSmartGrower::waterlevel
   export function waterlevel(): number {
     return 1;
   }
@@ -195,7 +195,7 @@ namespace asparaStylist {
    */
   //% block="date and time (year,month,day,hour,minute,second)"
   //% weight=25
-  //% shim=asparaStylist::getDatetime
+  //% shim=asparaSmartGrower::getDatetime
   export function getDatetime(): Buffer {
     return (Buffer.fromArray([22, 20, 1, 2, 3, 4, 5]));
   }

@@ -15,7 +15,7 @@
 /**
   * Class definition for a MicroBit BLE Service.
   */
-class asparaStylistService : public MicroBitBLEService
+class asparaSmartGrowerService : public MicroBitBLEService
 {
 public:
   bool serviceBLEConnected;
@@ -23,10 +23,10 @@ public:
   time_t deviceTime = 1698796800; // 2023 11 1 00:00:00
   uint32_t deviceTimeMark;
   uint32_t connectedTimeMark;
-  static asparaStylistService *getInstance();
+  static asparaSmartGrowerService *getInstance();
   bool IsBleConnected();
   void setBroadcastName(const char *name);
-  void stylistSendCmd(uint8_t *cmd, uint8_t len);
+  void smartGrowerSendCmd(uint8_t *cmd, uint8_t len);
   void getTemperature(uint8_t *cmd);
   void getHumidity(uint8_t *cmd);
   void getLightSensor(uint8_t *cmd);
@@ -39,14 +39,14 @@ public:
   void getLedIntensity(uint8_t *cmd);
 
 private:
-  static asparaStylistService *service; // Singleton
+  static asparaSmartGrowerService *service; // Singleton
 
   /**
    * Constructor.
    * Create a representation of the Bluetooth SIG HID Service
    * @param _ble The instance of a BLE device that we're running on.
    */
-  asparaStylistService();
+  asparaSmartGrowerService();
 
   /**
     * Invoked when BLE connects.
@@ -89,7 +89,7 @@ private:
   } asparaCharIdx;
 
   static const uint8_t base_uuid[16];
-  // static const uint8_t stylistCmdHeader[2];
+  // static const uint8_t smartGrowerCmdHeader[2];
 
   // Service UUID
   static const uint16_t serviceId;
@@ -120,8 +120,8 @@ private:
   int              characteristicCount()          { return asparaCharCount; };
   MicroBitBLEChar *characteristicPtr(int idx)     { return &chars[ idx]; };
 
-  void stylistStartAdvertise();
-  void stylistStopAdvertise();
+  void smartGrowerStartAdvertise();
+  void smartGrowerStopAdvertise();
 
   void setName();
 };

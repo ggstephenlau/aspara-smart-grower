@@ -3,11 +3,11 @@
 
 #include "time.h"
 #include "debug.h"
-#include "aspara-stylist-service.h"
+#include "aspara-smart-grower-service.h"
 
 using namespace pxt; 
 
-static asparaStylistService *controllerService = NULL;
+static asparaSmartGrowerService *controllerService = NULL;
 
 static uint16_t deviceTemperature = 0;
 static uint8_t deviceHumidity = 0;
@@ -20,7 +20,7 @@ static uint8_t deviceIntensity[3] = {0, 0, 0};
 static uint8_t deviceIndicatorState[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static uint8_t devicePumpState = 0;
 
-static uint8_t stylistCmdBuffer[10];
+static uint8_t smartGrowerCmdBuffer[10];
 static uint8_t tempCmdBuffer[3];
 static uint8_t humiCmdBuffer[2];
 static uint8_t lightSensorCmdBuffer[3];
@@ -34,11 +34,11 @@ static uint8_t intensityCmdBuffer[4];
 
 const int timeLimitCount = 15;  // uBit.wait(100), would be 1.5s
 
-namespace asparaStylist { 
+namespace asparaSmartGrower { 
   //% 
-  void startAsparaStylistService(int id) { 
+  void startAsparaSmartGrowerService(int id) { 
     if (controllerService == NULL) {
-      controllerService = asparaStylistService::getInstance();
+      controllerService = asparaSmartGrowerService::getInstance();
       if (controllerService) {
         char IdName[] = "GGmB-000000";
 
@@ -52,11 +52,11 @@ namespace asparaStylist {
   void setLEDlights(int white, int red, int blue) {
     if (controllerService != NULL) {
       if (controllerService->IsBleConnected()) {
-        stylistCmdBuffer[0] = 0xB0;
-        stylistCmdBuffer[1] = white;
-        stylistCmdBuffer[2] = red;
-        stylistCmdBuffer[3] = blue;
-        controllerService->stylistSendCmd(stylistCmdBuffer, 4);
+        smartGrowerCmdBuffer[0] = 0xB0;
+        smartGrowerCmdBuffer[1] = white;
+        smartGrowerCmdBuffer[2] = red;
+        smartGrowerCmdBuffer[3] = blue;
+        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 4);
       }
     }
   }
@@ -65,10 +65,10 @@ namespace asparaStylist {
   void setLEDlight(int ledtype, int intensity) {
     if (controllerService != NULL) {
       if (controllerService->IsBleConnected()) {
-        stylistCmdBuffer[0] = 0xB1;
-        stylistCmdBuffer[1] = ledtype;
-        stylistCmdBuffer[2] = intensity;
-        controllerService->stylistSendCmd(stylistCmdBuffer, 3);
+        smartGrowerCmdBuffer[0] = 0xB1;
+        smartGrowerCmdBuffer[1] = ledtype;
+        smartGrowerCmdBuffer[2] = intensity;
+        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
       }
     }
   }
@@ -77,10 +77,10 @@ namespace asparaStylist {
   void setIndicator(int indicatortype, int onoff) {
     if (controllerService != NULL) {
       if (controllerService->IsBleConnected()) {
-        stylistCmdBuffer[0] = 0xB7;
-        stylistCmdBuffer[1] = indicatortype;
-        stylistCmdBuffer[2] = onoff;
-        controllerService->stylistSendCmd(stylistCmdBuffer, 3);
+        smartGrowerCmdBuffer[0] = 0xB7;
+        smartGrowerCmdBuffer[1] = indicatortype;
+        smartGrowerCmdBuffer[2] = onoff;
+        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
       }
     }
   }
@@ -89,9 +89,9 @@ namespace asparaStylist {
   void setPump(int onoff) { 
     if (controllerService != NULL) {
       if (controllerService->IsBleConnected()) {
-        stylistCmdBuffer[0] = 0xB2;
-        stylistCmdBuffer[1] = onoff;
-        controllerService->stylistSendCmd(stylistCmdBuffer, 2);
+        smartGrowerCmdBuffer[0] = 0xB2;
+        smartGrowerCmdBuffer[1] = onoff;
+        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
       }
     }
   }
@@ -128,9 +128,9 @@ namespace asparaStylist {
   void beep(int longbeep) { 
     if (controllerService != NULL) {
       if (controllerService->IsBleConnected()) {
-        stylistCmdBuffer[0] = 0xB4;
-        stylistCmdBuffer[1] = (uint8_t)longbeep;
-        controllerService->stylistSendCmd(stylistCmdBuffer, 2);
+        smartGrowerCmdBuffer[0] = 0xB4;
+        smartGrowerCmdBuffer[1] = (uint8_t)longbeep;
+        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
       }
     }
   }
