@@ -1,4 +1,3 @@
-
 ## Introduction
 * To demo the uses of the values from <B>aspara Wireless Planting Sensor</B> in the <B>aspara Smart Grower</B> MakeCode extension.
 

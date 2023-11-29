@@ -1,4 +1,3 @@
-
 ## Introduction
 * To demo the use of the control blocks of the <B>aspara Smart Grower</B> MakeCode extension.
 
