@@ -7,7 +7,7 @@
 
 using namespace pxt; 
 
-static asparaSmartGrowerService *controllerService = NULL;
+static asparaSmartGrowerService *smartGrowerService = NULL;
 
 static uint16_t deviceTemperature = 0;
 static uint8_t deviceHumidity = 0;
@@ -37,77 +37,77 @@ const int timeLimitCount = 15;  // uBit.wait(100), would be 1.5s
 namespace asparaSmartGrower { 
   //% 
   void startAsparaSmartGrowerService(int id) { 
-    if (controllerService == NULL) {
-      controllerService = asparaSmartGrowerService::getInstance();
-      if (controllerService) {
+    if (smartGrowerService == NULL) {
+      smartGrowerService = asparaSmartGrowerService::getInstance();
+      if (smartGrowerService) {
         char IdName[] = "GGmB-000000";
 
         sprintf(&IdName[6], "%05d", id);
-        controllerService->setBroadcastName(IdName);
+        smartGrowerService->setBroadcastName(IdName);
       }
     }
   }
 
   //% 
   void setLEDlights(int white, int red, int blue) {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         smartGrowerCmdBuffer[0] = 0xB0;
         smartGrowerCmdBuffer[1] = white;
         smartGrowerCmdBuffer[2] = red;
         smartGrowerCmdBuffer[3] = blue;
-        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 4);
+        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 4);
       }
     }
   }
 
   //% 
   void setLEDlight(int ledtype, int intensity) {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         smartGrowerCmdBuffer[0] = 0xB1;
         smartGrowerCmdBuffer[1] = ledtype;
         smartGrowerCmdBuffer[2] = intensity;
-        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
+        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
       }
     }
   }
 
   //% 
   void setIndicator(int indicatortype, int onoff) {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         smartGrowerCmdBuffer[0] = 0xB7;
         smartGrowerCmdBuffer[1] = indicatortype;
         smartGrowerCmdBuffer[2] = onoff;
-        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
+        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
       }
     }
   }
 
   //% 
   void setPump(int onoff) { 
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         smartGrowerCmdBuffer[0] = 0xB2;
         smartGrowerCmdBuffer[1] = onoff;
-        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
+        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
       }
     }
   }
 
   //% 
   uint8_t ledIntensity(int type) { 
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (intensityCmdBuffer[0] != 0xB3) {
           intensityCmdBuffer[0] = 0xB3;
           intensityCmdBuffer[1] = (uint8_t)type;
-          controllerService->getLedIntensity(intensityCmdBuffer);
+          smartGrowerService->getLedIntensity(intensityCmdBuffer);
         }
         // while(intensityCmdBuffer[0] != 0xE3) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (intensityCmdBuffer[0] == 0xE3) {
               i = timeLimitCount;
             } else {
@@ -126,27 +126,27 @@ namespace asparaSmartGrower {
 
   //% 
   void beep(int longbeep) { 
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         smartGrowerCmdBuffer[0] = 0xB4;
         smartGrowerCmdBuffer[1] = (uint8_t)longbeep;
-        controllerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
+        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
       }
     }
   }
 
   //% 
   uint8_t indicatorState(int type) {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (indicatorCmdBuffer[0] != 0xB8) {
           indicatorCmdBuffer[0] = 0xB8;
           indicatorCmdBuffer[1] = (uint8_t)type;
-          controllerService->getIndicatorState(indicatorCmdBuffer);
+          smartGrowerService->getIndicatorState(indicatorCmdBuffer);
         }
         // while(indicatorCmdBuffer[0] != 0xE8) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (indicatorCmdBuffer[0] == 0xE8) {
               i = timeLimitCount;
             } else {
@@ -165,15 +165,15 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t pumpState() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (pumpCmdBuffer[0] != 0xB5) {
           pumpCmdBuffer[0] = 0xB5;
-          controllerService->getPumpState(pumpCmdBuffer);
+          smartGrowerService->getPumpState(pumpCmdBuffer);
         }
         // while(pumpCmdBuffer[0] != 0xE5) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (pumpCmdBuffer[0] == 0xE5) {
               i = timeLimitCount;
             } else {
@@ -192,15 +192,15 @@ namespace asparaSmartGrower {
 
   //% 
   float temperature() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (tempCmdBuffer[0] != 0xBA) {
           tempCmdBuffer[0] = 0xBA;
-          controllerService->getTemperature(tempCmdBuffer);
+          smartGrowerService->getTemperature(tempCmdBuffer);
         }
         // while(tempCmdBuffer[0] != 0xEA) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (tempCmdBuffer[0] == 0xEA) {
               i = timeLimitCount;
             } else {
@@ -219,15 +219,15 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t humidity() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (humiCmdBuffer[0] != 0xBB) {
           humiCmdBuffer[0] = 0xBB;
-          controllerService->getHumidity(humiCmdBuffer);
+          smartGrowerService->getHumidity(humiCmdBuffer);
         }
         // while(humiCmdBuffer[0] != 0xEB) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (humiCmdBuffer[0] == 0xEB) {
               i = timeLimitCount;
             } else {
@@ -246,15 +246,15 @@ namespace asparaSmartGrower {
 
   //% 
   uint16_t lightsensor() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (lightSensorCmdBuffer[0] != 0xBC) {
           lightSensorCmdBuffer[0] = 0xBC;
-          controllerService->getLightSensor(lightSensorCmdBuffer);
+          smartGrowerService->getLightSensor(lightSensorCmdBuffer);
         }
         // while(lightSensorCmdBuffer[0] != 0xEC) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (lightSensorCmdBuffer[0] == 0xEC) {
               i = timeLimitCount;
             } else {
@@ -273,15 +273,15 @@ namespace asparaSmartGrower {
 
   //% 
   uint16_t nutrient() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (nutrientCmdBuffer[0] != 0xBD) {
           nutrientCmdBuffer[0] = 0xBD;
-          controllerService->getNutrient(nutrientCmdBuffer);
+          smartGrowerService->getNutrient(nutrientCmdBuffer);
         }
         // while(nutrientCmdBuffer[0] != 0xED) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (nutrientCmdBuffer[0] == 0xED) {
               i = timeLimitCount;
             } else {
@@ -300,15 +300,15 @@ namespace asparaSmartGrower {
 
   //% 
   float battery() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (batteryCmdBuffer[0] != 0xBE) {
           batteryCmdBuffer[0] = 0xBE;
-          controllerService->getBattery(batteryCmdBuffer);
+          smartGrowerService->getBattery(batteryCmdBuffer);
         }
         // while(batteryCmdBuffer[0] != 0xEE) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (batteryCmdBuffer[0] == 0xEE) {
               i = timeLimitCount;
             } else {
@@ -327,15 +327,15 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t waterlevel() {
-    if (controllerService != NULL) {
-      if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
         if (waterLevelCmdBuffer[0] != 0xBF) {
           waterLevelCmdBuffer[0] = 0xBF;
-          controllerService->getWaterLevel(waterLevelCmdBuffer);
+          smartGrowerService->getWaterLevel(waterLevelCmdBuffer);
         }
         // while(waterLevelCmdBuffer[0] != 0xEF) {
         for(int i = 0; i < timeLimitCount; i++) {
-          if (controllerService->IsBleConnected()) {
+          if (smartGrowerService->IsBleConnected()) {
             if (waterLevelCmdBuffer[0] == 0xEF) {
               i = timeLimitCount;
             } else {
@@ -358,16 +358,16 @@ namespace asparaSmartGrower {
     const time_t consttimet = 1698796800; // 2023 11 1 00:00:00
     time_t realtime;
 
-    if (controllerService != NULL) {
-      if (controllerService->deviceTimeMark == 0) {
-        if (controllerService->IsBleConnected()) {
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->deviceTimeMark == 0) {
+        if (smartGrowerService->IsBleConnected()) {
           if (rtcCmdBuffer[0] != 0xB6) {
             rtcCmdBuffer[0] = 0xB6;
-            controllerService->getRtc(rtcCmdBuffer);
+            smartGrowerService->getRtc(rtcCmdBuffer);
           }
           // while(rtcCmdBuffer[0] != 0xE6) {
           for(int i = 0; i < timeLimitCount; i++) {
-            if (controllerService->IsBleConnected()) {
+            if (smartGrowerService->IsBleConnected()) {
               if (rtcCmdBuffer[0] == 0xE6) {
                 i = timeLimitCount;
               } else {
@@ -380,7 +380,7 @@ namespace asparaSmartGrower {
           }
         }
       } else {
-        realtime = controllerService->deviceTime + ((system_timer_current_time() - controllerService->deviceTimeMark) / 1000);
+        realtime = smartGrowerService->deviceTime + ((system_timer_current_time() - smartGrowerService->deviceTimeMark) / 1000);
       }
     } else {
       realtime = consttimet + (system_timer_current_time() / 1000);

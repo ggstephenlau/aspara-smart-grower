@@ -1,5 +1,5 @@
-#ifndef ASPARA_LITE_BLE_CONTROLLER_SERVICE_H
-#define ASPARA_LITE_BLE_CONTROLLER_SERVICE_H
+#ifndef ASPARA_SMART_GROWER_SERVICE_H
+#define ASPARA_SMART_GROWER_SERVICE_H
 
 
 #include "MicroBitConfig.h"
@@ -125,4 +125,4 @@ private:
 
   void setName();
 };
-#endif // #ifdef ASPARA_LITE_BLE_CONTROLLER_SERVICE_H
+#endif // #ifdef ASPARA_SMART_GROWER_SERVICE_H

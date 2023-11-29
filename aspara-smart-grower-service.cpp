@@ -9,7 +9,7 @@
 
 #define VERSION     10
 #define VER_MAJOR   1
-#define VER_MINOR   24
+#define VER_MINOR   25
 
 // Advertising includes
 #include "ble.h"
