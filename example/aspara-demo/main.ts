@@ -7,22 +7,6 @@ function get_date_time () {
     minute = date_time[5]
     second = date_time[6]
 }
-function toggle_pump () {
-    for (let index = 0; index < 20; index++) {
-        if (using_BLE == 0) {
-            using_BLE = 1
-            if (asparaSmartGrower.pumpState() == 0) {
-                asparaSmartGrower.setPump(ON_OFF.on)
-            } else {
-                asparaSmartGrower.setPump(ON_OFF.off)
-            }
-            using_BLE = 0
-            break;
-        } else {
-            basic.pause(50)
-        }
-    }
-}
 function initialization () {
     Year = 0
     month = 0
@@ -44,11 +28,62 @@ input.onButtonPressed(Button.A, function () {
     asparaSmartGrower.beep(DURATION.short)
     set_LED_lights(100, 0, 50)
 })
+function toggle_indicators () {
+    if (using_BLE == 0) {
+        using_BLE = 1
+        if (toggle == 0) {
+            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_5, ON_OFF.on)
+            toggle = 1
+        } else {
+            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_5, ON_OFF.off)
+            toggle = 0
+        }
+        using_BLE = 0
+    }
+}
+input.onButtonPressed(Button.AB, function () {
+    asparaSmartGrower.beep(DURATION.short)
+    toggle_pump()
+})
+input.onButtonPressed(Button.B, function () {
+    asparaSmartGrower.beep(DURATION.short)
+    set_LED_lights(0, 100, 50)
+})
+input.onGesture(Gesture.Shake, function () {
+    asparaSmartGrower.beep(DURATION.long)
+})
+function toggle_pump () {
+    for (let index = 0; index < 20; index++) {
+        if (using_BLE == 0) {
+            using_BLE = 1
+            if (asparaSmartGrower.pumpState() == 0) {
+                asparaSmartGrower.setPump(ON_OFF.on)
+            } else {
+                asparaSmartGrower.setPump(ON_OFF.off)
+            }
+            using_BLE = 0
+            break;
+        } else {
+            basic.pause(50)
+        }
+    }
+}
 function get_data () {
     if (using_BLE == 0) {
         using_BLE = 1
         serial.writeValue("temperature", asparaSmartGrower.temperature())
         serial.writeValue("light intensity", asparaSmartGrower.lightsensor())
+        using_BLE = 0
+    }
+}
+function print_date_time () {
+    if (using_BLE == 0) {
+        using_BLE = 1
+        serial.writeLine("***************************************************************")
+        serial.writeLine("")
+        serial.writeString("" + convertToText(Year) + "-" + convertToText(month) + "-" + convertToText(day) + "            " + convertToText(hour) + ":" + convertToText(minute) + ":" + convertToText(second))
+        serial.writeLine("")
+        serial.writeLine("***************************************************************")
         using_BLE = 0
     }
 }
@@ -70,41 +105,6 @@ function set_LED_lights (red: number, blue: number, white: number) {
         using_BLE = 0
     }
 }
-function toggle_indicators () {
-    if (using_BLE == 0) {
-        using_BLE = 1
-        if (toggle == 0) {
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_5, ON_OFF.on)
-            toggle = 1
-        } else {
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_5, ON_OFF.off)
-            toggle = 0
-        }
-        using_BLE = 0
-    }
-}
-input.onButtonPressed(Button.AB, function () {
-    asparaSmartGrower.beep(DURATION.short)
-    toggle_pump()
-})
-function print_date_time () {
-    if (using_BLE == 0) {
-        using_BLE = 1
-        serial.writeLine("***************************************************************")
-        serial.writeLine("")
-        serial.writeString("" + convertToText(Year) + "-" + convertToText(month) + "-" + convertToText(day) + "            " + convertToText(hour) + ":" + convertToText(minute) + ":" + convertToText(second))
-        serial.writeLine("")
-        serial.writeLine("***************************************************************")
-        using_BLE = 0
-    }
-}
-input.onButtonPressed(Button.B, function () {
-    asparaSmartGrower.beep(DURATION.short)
-    set_LED_lights(0, 100, 50)
-})
-input.onGesture(Gesture.Shake, function () {
-    asparaSmartGrower.beep(DURATION.long)
-})
 let white_intensity = 0
 let blue_intensity = 0
 let red_intensity = 0
