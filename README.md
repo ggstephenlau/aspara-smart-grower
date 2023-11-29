@@ -108,7 +108,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 #### A full planting program by the micro:bit
 * <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/examples/aspara-planting-demo</B></I>
 
-## Reminder
+## Compatibility
 
 * Works with <B>micro:bit V2</B> hardware only
 

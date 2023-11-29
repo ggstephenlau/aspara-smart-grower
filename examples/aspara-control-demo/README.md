@@ -1,24 +1,13 @@
 
-> Open this page at [https://ggstephenlau.github.io/aspara-smart-grower-planting-demo-stylist/](https://ggstephenlau.github.io/aspara-smart-grower-planting-demo-stylist/)
+## Introduction
+* To demo the use of the control blocks of the <B>aspara-smart-grower</B> MakeCode extension
 
-## Use as Extension
+    <img src="../../pngs/sample_control_prog_blocks.png" width=1076 height=641>
+* Press the "A" button would turn on the "RED" led light
+* Press the "B" button would turn on the "BLUE" led light
+* Press the "A+B" button would turn on the "WHITE" led light
+* Shack the micro:bit would off all led lights and toggle the pump.
 
-This repository can be added as an **extension** in MakeCode.
+## Compatibility
 
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **New Project**
-* click on **Extensions** under the gearwheel menu
-* search for **https://github.com/ggstephenlau/aspara-smart-grower-planting-demo-stylist** and import
-
-## Edit this project
-
-To edit this repository in MakeCode.
-
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **Import** then click on **Import URL**
-* paste **https://github.com/ggstephenlau/aspara-smart-grower-planting-demo-stylist** and click import
-
-#### Metadata (used for search, rendering)
-
-* for PXT/microbit
-<script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
+* Works with <B>micro:bit V2</B> hardware only
