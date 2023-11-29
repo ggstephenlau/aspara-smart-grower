@@ -1,10 +1,11 @@
 {
-    "name": "aspara Smart Grower planting demo (Stylist)",
+    "name": "aspara planting demo",
     "description": "",
     "dependencies": {
         "core": "*",
         "microphone": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#1e143cddc8cafdc95905f4447387a98e60fc5122"
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower",
+        "bluetooth": "*"
     },
     "files": [
         "main.blocks",

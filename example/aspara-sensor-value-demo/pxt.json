@@ -1,10 +1,11 @@
 {
-    "name": "aspara simple demo",
+    "name": "aspara sensor value demo",
     "description": "",
     "dependencies": {
         "core": "*",
         "microphone": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower"
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower",
+        "bluetooth": "*"
     },
     "files": [
         "main.blocks",
