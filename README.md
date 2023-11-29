@@ -13,7 +13,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
 * Enable the <I><U>"No Pairing Required: Anyone can connect via Bluetooth."</U></I> and <I>"Save"</I>
 
-    <img src="./pngs/proj_init_options.png" width=318 height=140>
+    <img src="./pngs/proj_init_options.png" width=325 height=143>
 
 * In the web editor, click on <I>"Extensions"</I> to add extensions to the project
 
@@ -21,19 +21,19 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
 * Enter "<I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension</B></I>" and search
 
-    <img src="./pngs/proj_ext_search.png" width=600 height=190>
+    <img src="./pngs/proj_ext_search.png" width=878 height=284>
 
 * Select the aspara micro:bit MakeCode Extension from the search results.
 
-    <img src= "./pngs/proj_ext_result.png" width=111 height=125>
+    <img src= "./pngs/proj_ext_result.png" width=146 height=161>
 
 * Select <I>"Remvoe extension(s) and add aspara-smart-grower"</I> if a pop-up appears with the message <I>"Some extensions will be removed"</I>
 
-    <img src="./pngs/proj_ext_popup.png" width=360 height=107>
+    <img src="./pngs/proj_ext_popup.png" width=361 height=119>
 
 * <I>"aspara Smart Grower"</I> will show up in the editor and be ready to use.
 
-    <img src="./pngs/proj_ext_complete.png" width=110 height=129 >
+    <img src="./pngs/proj_ext_complete.png" width=121 height=101 >
 
 ## How to use the extension
 ### On start - assign an unique microbit ID for the project
@@ -41,7 +41,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 * Enter an ID for this project.
 * E.g.
 
-    <img src="./pngs/proj_microbit_id.png" width=524 height=198/>
+    <img src="./pngs/proj_microbit_id.png" width=547 height=180/>
 ### Control blocks
 * Set LED (red/blue/white) lights intensity (0 - 100)%
 
