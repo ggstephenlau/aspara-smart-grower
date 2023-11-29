@@ -1,21 +1,20 @@
 # aspara micro:bit MakeCode Extension
 This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower by [Growgreen Limited](https://www.grow-green.com/)
 
-<img src="./pngs/stylist.png" alt="image" width="300" height="auto">
-<img src="./pngs/microbit.png" alt="image" width="200" height="auto">
+<img src="./pngs/stylist.png" alt="image" width="300" height="auto"><img src="./pngs/microbit.png" alt="image" width="200" height="auto">
 
 ## How to add aspara micro:bit MakeCode Extension to your MakeCode project
 
 * Create/Open a MakeCode project using the micro:bit MakeCode Editor at https://makecode.microbit.org
-* Click the cog icon in the top right, then select <I> "Project Settings"</I>
+* Click the cog icon in the top right, then select <B> "Project Settings"</B>
 
     <img src="./pngs/proj_init_settings.png" width=195 height=91>
 
-* Enable the <I><U>"No Pairing Required: Anyone can connect via Bluetooth."</U></I> and <I>"Save"</I>
+* Enable the <B>"No Pairing Required: Anyone can connect via Bluetooth."</B> and <B>"Save"</B>
 
     <img src="./pngs/proj_init_options.png" width=325 height=143>
 
-* In the web editor, click on <I>"Extensions"</I> to add extensions to the project
+* In the web editor, click on <B>"Extensions"</B> to add extensions to the project
 
     <img src="./pngs/proj_ext_b4.png" width=114 height=245>
 
@@ -23,21 +22,21 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
     <img src="./pngs/proj_ext_search.png" width=878 height=284>
 
-* Select the aspara micro:bit MakeCode Extension from the search results.
+* Select the <B>aspara-smart-grower</B> from the search results.
 
     <img src= "./pngs/proj_ext_result.png" width=146 height=161>
 
-* Select <I>"Remvoe extension(s) and add aspara-smart-grower"</I> if a pop-up appears with the message <I>"Some extensions will be removed"</I>
+* Select <B>"Remvoe extension(s) and add aspara-smart-grower"</B> if a pop-up appears with the message <B>"Some extensions will be removed"</B>
 
     <img src="./pngs/proj_ext_popup.png" width=361 height=119>
 
-* <I>"aspara Smart Grower"</I> will show up in the editor and be ready to use.
+* <B>"aspara Smart Grower"</B> will show up in the editor and be ready to use.
 
     <img src="./pngs/proj_ext_complete.png" width=121 height=101 >
 
 ## How to use the extension
 ### On start - assign an unique microbit ID for the project
-* Add <I><U>"start aspara Smart Grower service with microbit ID"</U></I> from the aspara Smart Grower extension to the block <I><U>"on start"</U></I>
+* Add <B>"start aspara Smart Grower service with microbit ID"</B> from the aspara Smart Grower extension to the block <B>"on start"</B>
 * Enter an ID for this project.
 * E.g.
 
@@ -101,19 +100,17 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 * Download and Run the project.
 * Use the aspara STEM app to pair the aspara Smart Grower and aspara Wireless Planting Sensor with the micro:bit.
 
-## Sample micro:bit projects using aspara Smart Grower extension
-### Following are aspara Smart Grower microbit projects which could be imported to the microbit makecode editor for demo purposes.
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-simple-demo</B></I>
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-demo</B></I>
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/example/aspara-planting-demo</B></I>
+## Sample micro:bit MakeCode Projects using aspara Smart Grower Extension
+#### Very simple project to show the use of control blocks
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/examples/aspara-control-demo</B></I>
+#### Simple project to show the use of the wireless Planting Sensor values
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/examples/aspara-sensor-value-demo</B></I>
+#### A full planting program by the micro:bit
+* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/examples/aspara-planting-demo</B></I>
 
 ## Reminder
 
-* Works with <I><B><U>micro:bit V2</U></B></I> hardware only
+* Works with <B>micro:bit V2</B> hardware only
 
 ## Supported targets
 * for PXT/microbit
-
-## License
-
-* [MIT](https://choosealicense.com/licenses/mit/)
