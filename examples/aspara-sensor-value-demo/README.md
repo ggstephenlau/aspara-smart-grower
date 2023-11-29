@@ -1,6 +1,6 @@
 ## Introduction
 * To demo the uses of the values from <B>aspara Wireless Planting Sensor</B> in the <B>aspara Smart Grower</B> MakeCode extension.
-
+<img src="../../pngs/values_prog_blocks.png" width=1065 height=743>
 ## Control actions
 * Press the "A" button would turn on the "RED" and "WHITE" led lights.
 * Press the "B" button would turn on the "BLUE" and "WHITE" led lights.

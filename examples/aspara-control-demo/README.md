@@ -6,7 +6,7 @@
 * Press the "A" button would turn on the "RED" led light.
 * Press the "B" button would turn on the "BLUE" led light.
 * Press the "A+B" button would turn on the "WHITE" led light.
-* Shack the micro:bit would off all led lights and toggle the pump on/off states.
+* Shack the micro:bit would turn off all led lights and toggle the pump on/off states.
 
 ## Compatibility
 
