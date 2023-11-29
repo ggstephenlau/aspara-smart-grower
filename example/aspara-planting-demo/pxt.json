@@ -1,11 +1,10 @@
 {
-    "name": "aspara planting demo",
+    "name": "aspara Smart Grower planting demo (Stylist)",
     "description": "",
     "dependencies": {
         "core": "*",
         "microphone": "*",
-        "aspara-lite-ble-controller": "github:ggstephenlau/pxt-lite-ble-controller#1f8b0bf96d5a4d37981f448f1b23e1043f28d542",
-        "bluetooth": "*"
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#1e143cddc8cafdc95905f4447387a98e60fc5122"
     },
     "files": [
         "main.blocks",
