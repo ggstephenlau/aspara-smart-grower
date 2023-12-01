@@ -1,20 +1,14 @@
 function toggle_indicator () {
-    if (using_BLE == 0) {
-        using_BLE = 1
-        if (second % 2 > 0) {
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_2, ON_OFF.on)
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_3, ON_OFF.on)
-        } else {
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_2, ON_OFF.off)
-            asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_3, ON_OFF.off)
-        }
-        using_BLE = 0
+    if (second % 2 == 1) {
+        asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_2, ON_OFF.on)
+    } else {
+        asparaSmartGrower.setIndicator(INDICATOR_TYPE.indicator_2, ON_OFF.off)
     }
 }
 function in_planting_period () {
-    if (hour >= 7 && hour < 17) {
+    if (hour >= 9 && hour < 18) {
         return 1
-    } else if (hour == 17) {
+    } else if (hour == 18) {
         if (minute >= 0 && minute < 30) {
             return 1
         } else {
@@ -24,29 +18,18 @@ function in_planting_period () {
         return 0
     }
 }
-function initialization () {
-    Year = 0
-    month = 0
-    day = 0
-    hour = 0
-    minute = 0
-    second = 0
-    red_intensity = 0
-    blue_intensity = 0
-    white_intensity = 0
-    pump_state = 0
-    using_BLE = 0
-}
 bluetooth.onBluetoothConnected(function () {
     basic.showIcon(IconNames.Happy)
-    initialization()
+    Initialization()
 })
 bluetooth.onBluetoothDisconnected(function () {
     basic.showIcon(IconNames.Sad)
 })
 input.onButtonPressed(Button.A, function () {
     asparaSmartGrower.beep(DURATION.short)
-    set_LED_lights(10, 10, 10)
+    asparaSmartGrower.setLEDlight(LED_TYPE.red, 0)
+    asparaSmartGrower.setLEDlight(LED_TYPE.blue, 0)
+    asparaSmartGrower.setLEDlight(LED_TYPE.white, 100)
 })
 function get_datetime () {
     date_time = asparaSmartGrower.getDatetime()
@@ -59,94 +42,55 @@ function get_datetime () {
 }
 function water_program () {
     if (minute % 15 < 1) {
-        set_pump(1)
+        asparaSmartGrower.setPump(ON_OFF.on)
     } else {
-        set_pump(0)
+        asparaSmartGrower.setPump(ON_OFF.off)
     }
+}
+function Initialization () {
+    Year = 0
+    month = 0
+    day = 0
+    hour = 0
+    minute = 0
+    second = 0
 }
 input.onButtonPressed(Button.B, function () {
     asparaSmartGrower.beep(DURATION.long)
-    set_LED_lights(0, 0, 0)
+    asparaSmartGrower.setLEDlight(LED_TYPE.red, 0)
+    asparaSmartGrower.setLEDlight(LED_TYPE.blue, 0)
+    asparaSmartGrower.setLEDlight(LED_TYPE.white, 0)
 })
-function set_pump (onoff: number) {
-    if (onoff != pump_state) {
-        if (using_BLE == 0) {
-            using_BLE = 1
-            if (onoff == 0) {
-                asparaSmartGrower.setPump(ON_OFF.off)
-            } else {
-                asparaSmartGrower.setPump(ON_OFF.on)
-            }
-            pump_state = asparaSmartGrower.pumpState()
-            using_BLE = 0
-        }
-    }
-}
 function get_data () {
-    if (using_BLE == 0) {
-        using_BLE = 1
-        serial.writeValue("temp", asparaSmartGrower.temperature())
-        serial.writeValue("nutrient", asparaSmartGrower.nutrient())
-        serial.writeValue("light intensity", asparaSmartGrower.lightsensor())
-        using_BLE = 0
-    }
+    serial.writeValue("temperature", asparaSmartGrower.temperature())
+    serial.writeValue("nutrient", asparaSmartGrower.nutrient())
+    serial.writeValue("light intensity", asparaSmartGrower.lightsensor())
 }
 function light_program () {
     if (in_planting_period() == 1) {
-        set_LED_lights(50, 81, 81)
+        asparaSmartGrower.setLEDlight(LED_TYPE.red, 100)
+        asparaSmartGrower.setLEDlight(LED_TYPE.blue, 100)
+        asparaSmartGrower.setLEDlight(LED_TYPE.white, 0)
     } else {
-        set_LED_lights(0, 0, 0)
+        asparaSmartGrower.setLEDlight(LED_TYPE.red, 0)
+        asparaSmartGrower.setLEDlight(LED_TYPE.blue, 0)
+        asparaSmartGrower.setLEDlight(LED_TYPE.white, 0)
     }
 }
-function set_LED_lights (red: number, blue: number, white: number) {
-    if (red != red_intensity) {
-        if (using_BLE == 0) {
-            using_BLE = 1
-            asparaSmartGrower.setLEDlight(LED_TYPE.red, red)
-            red_intensity = asparaSmartGrower.ledIntensity(LED_TYPE.red)
-            using_BLE = 0
-        }
-    }
-    if (blue != blue_intensity) {
-        if (using_BLE == 0) {
-            using_BLE = 1
-            asparaSmartGrower.setLEDlight(LED_TYPE.blue, blue)
-            blue_intensity = asparaSmartGrower.ledIntensity(LED_TYPE.blue)
-            using_BLE = 0
-        }
-    }
-    if (white != white_intensity) {
-        if (using_BLE == 0) {
-            using_BLE = 1
-            asparaSmartGrower.setLEDlight(LED_TYPE.white, white)
-            white_intensity = asparaSmartGrower.ledIntensity(LED_TYPE.white)
-            using_BLE = 0
-        }
-    }
-}
-let date_time: Buffer = null
-let pump_state = 0
-let white_intensity = 0
-let blue_intensity = 0
-let red_intensity = 0
 let day = 0
 let month = 0
 let Year = 0
+let date_time: Buffer = null
 let minute = 0
 let hour = 0
 let second = 0
-let using_BLE = 0
-basic.showIcon(IconNames.Duck)
-initialization()
+basic.showIcon(IconNames.TShirt)
+Initialization()
 asparaSmartGrower.startAsparaSmartGrowerService(22582)
 loops.everyInterval(1000, function () {
     get_datetime()
     light_program()
-})
-loops.everyInterval(500, function () {
-    toggle_indicator()
-})
-loops.everyInterval(2000, function () {
     water_program()
+    toggle_indicator()
     get_data()
 })

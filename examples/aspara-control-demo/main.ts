@@ -33,7 +33,7 @@ input.onGesture(Gesture.Shake, function () {
     asparaSmartGrower.setLEDlight(LED_TYPE.blue, 0)
     asparaSmartGrower.setLEDlight(LED_TYPE.white, 0)
 })
-basic.showIcon(IconNames.Skull)
+basic.showIcon(IconNames.TShirt)
 asparaSmartGrower.startAsparaSmartGrowerService(22582)
 basic.forever(function () {
 	
