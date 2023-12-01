@@ -40,6 +40,7 @@ public:
 
 private:
   static asparaSmartGrowerService *service; // Singleton
+  uint8_t semBLE;
 
   /**
    * Constructor.
@@ -99,7 +100,7 @@ private:
   bool advertising;
   uint8_t status[54];
   uint8_t command[32];
-  uint8_t buffer[50];
+  uint8_t buffer[11][5];
   uint8_t *tempCmd;
   uint8_t *humiCmd;
   uint8_t *lightSensorCmd;

@@ -108,6 +108,7 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   DEBUG("\r\nasparaSmartGrowerService starting\r\n");
   DEBUG("\r\nVer: %d.%d.%d\r\n", VERSION, VER_MAJOR, VER_MINOR);
 #endif
+  semBLE = 0;
   deviceTimeMark = 0;
   connectedTimeMark = system_timer_current_time();
   serviceBLEConnected = false;
@@ -228,7 +229,14 @@ bool asparaSmartGrowerService::onBleEvent(const microbit_ble_evt_t *p_ble_evt) {
 }
 
 bool asparaSmartGrowerService::notifyChrValue( int idx, const uint8_t *data, uint16_t length) {
-  return MicroBitBLEService::notifyChrValue( idx, data, length);
+  bool ret = false;
+
+  if (semBLE == 0) {
+    semBLE = 1;
+    ret = MicroBitBLEService::notifyChrValue( idx, data, length);
+    semBLE = 0;
+  }
+  return ret;
 }
 
 void asparaSmartGrowerService::setName() {
@@ -321,8 +329,8 @@ void asparaSmartGrowerService::smartGrowerSendCmd(uint8_t *cmd, uint8_t len) {
 
   // memcpy(&buffer[i], smartGrowerCmdHeader, sizeof(smartGrowerCmdHeader));
   // i += sizeof(smartGrowerCmdHeader);
-  memcpy(&buffer[i], cmd, len);
-  buffer[0] = i + len;
+  memcpy(&buffer[0][i], cmd, len);
+  buffer[0][0] = i + len;
 #if DEBUG_ENABLED == 1
   for (int i=0; i < buffer[0]; i++) {
     if (buffer[i] < 0x10) {
@@ -333,77 +341,143 @@ void asparaSmartGrowerService::smartGrowerSendCmd(uint8_t *cmd, uint8_t len) {
   }
   DEBUG("\r\n");
 #endif
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[0][0], buffer[0][0])) {
+      break;
+    } else {
+      uBit.sleep(5);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getLedIntensity(uint8_t *cmd) {
   intensityCmd = cmd;
-  buffer[0] = 3;
-  buffer[1] = cmd[0];
-  buffer[2] = cmd[1];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[1][0] = 3;
+  buffer[1][1] = cmd[0];
+  buffer[1][2] = cmd[1];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[1][0], buffer[1][0])) {
+      break;
+    } else {
+      uBit.sleep(5+2);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getTemperature(uint8_t *cmd) {
   tempCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[2][0] = 2;
+  buffer[2][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[2][0], buffer[2][0])) {
+      break;
+    } else {
+      uBit.sleep(5+6);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getHumidity(uint8_t *cmd) {
   humiCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[3][0] = 2;
+  buffer[3][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[3][0], buffer[3][0])) {
+      break;
+    } else {
+      uBit.sleep(5+8);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getLightSensor(uint8_t *cmd) {
   lightSensorCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[4][0] = 2;
+  buffer[4][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[4][0], buffer[4][0])) {
+      break;
+    } else {
+      uBit.sleep(5+6);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getNutrient(uint8_t *cmd) {
   nutrientCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[5][0] = 2;
+  buffer[5][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[5][0], buffer[5][0])) {
+      break;
+    } else {
+      uBit.sleep(5+8);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getBattery(uint8_t *cmd) {
   batteryCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[6][0] = 2;
+  buffer[6][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[6][0], buffer[6][0])) {
+      break;
+    } else {
+      uBit.sleep(5+6);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getWaterLevel(uint8_t *cmd) {
   waterlevelCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[7][0] = 2;
+  buffer[7][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[7][0], buffer[7][0])) {
+      break;
+    } else {
+      uBit.sleep(5+8);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getIndicatorState(uint8_t *cmd) {
   indicatorCmd = cmd;
-  buffer[0] = 3;
-  buffer[1] = cmd[0];
-  buffer[2] = cmd[1];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[8][0] = 3;
+  buffer[8][1] = cmd[0];
+  buffer[8][2] = cmd[1];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[8][0], buffer[8][0])) {
+      break;
+    } else {
+      uBit.sleep(5+2);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getPumpState(uint8_t *cmd) {
   pumpCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[9][0] = 2;
+  buffer[9][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[9][0], buffer[9][0])) {
+      break;
+    } else {
+      uBit.sleep(5+6);
+    }
+  }
 }
 
 void asparaSmartGrowerService::getRtc(uint8_t *cmd) {
   rtcCmd = cmd;
-  buffer[0] = 2;
-  buffer[1] = cmd[0];
-  notifyChrValue( asparaCharControlCmd, buffer, buffer[0]);
+  buffer[10][0] = 2;
+  buffer[10][1] = cmd[0];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[10][0], buffer[10][0])) {
+      break;
+    } else {
+      uBit.sleep(5+2);
+    }
+  }
 }

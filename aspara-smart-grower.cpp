@@ -20,7 +20,7 @@ static uint8_t deviceIntensity[3] = {0, 0, 0};
 static uint8_t deviceIndicatorState[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static uint8_t devicePumpState = 0;
 
-static uint8_t smartGrowerCmdBuffer[10];
+static uint8_t smartGrowerCmdBuffer[14][4];
 static uint8_t tempCmdBuffer[3];
 static uint8_t humiCmdBuffer[2];
 static uint8_t lightSensorCmdBuffer[3];
@@ -50,75 +50,105 @@ namespace asparaSmartGrower {
 
   //% 
   void setLEDlights(int white, int red, int blue) {
+    static bool setLEDlights_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        smartGrowerCmdBuffer[0] = 0xB0;
-        smartGrowerCmdBuffer[1] = white;
-        smartGrowerCmdBuffer[2] = red;
-        smartGrowerCmdBuffer[3] = blue;
-        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 4);
+        smartGrowerCmdBuffer[0][0] = 0xB0;
+        smartGrowerCmdBuffer[0][1] = white;
+        smartGrowerCmdBuffer[0][2] = red;
+        smartGrowerCmdBuffer[0][3] = blue;
+        if (!setLEDlights_sem) {
+          setLEDlights_sem = true;
+          smartGrowerService->smartGrowerSendCmd(&smartGrowerCmdBuffer[0][0], 4);
+          setLEDlights_sem = false;
+        }
       }
     }
   }
 
   //% 
   void setLEDlight(int ledtype, int intensity) {
+    static bool setLEDlight_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        smartGrowerCmdBuffer[0] = 0xB1;
-        smartGrowerCmdBuffer[1] = ledtype;
-        smartGrowerCmdBuffer[2] = intensity;
-        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
+        smartGrowerCmdBuffer[3+ledtype][0] = 0xB1;
+        smartGrowerCmdBuffer[3+ledtype][1] = ledtype;
+        smartGrowerCmdBuffer[3+ledtype][2] = intensity;
+        if (!setLEDlight_sem) {
+          setLEDlight_sem = true;
+          smartGrowerService->smartGrowerSendCmd(&smartGrowerCmdBuffer[3+ledtype][0], 3);
+          setLEDlight_sem = false;
+        }
       }
     }
   }
 
   //% 
   void setIndicator(int indicatortype, int onoff) {
+    static bool setIndicator_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        smartGrowerCmdBuffer[0] = 0xB7;
-        smartGrowerCmdBuffer[1] = indicatortype;
-        smartGrowerCmdBuffer[2] = onoff;
-        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 3);
+        smartGrowerCmdBuffer[6+indicatortype][0] = 0xB7;
+        smartGrowerCmdBuffer[6+indicatortype][1] = indicatortype;
+        smartGrowerCmdBuffer[6+indicatortype][2] = onoff;
+        if (!setIndicator_sem) {
+          setIndicator_sem = true;
+          smartGrowerService->smartGrowerSendCmd(&smartGrowerCmdBuffer[6+indicatortype][0], 3);
+          setIndicator_sem = false;
+        }
       }
     }
   }
 
   //% 
   void setPump(int onoff) { 
+    static bool setPump_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        smartGrowerCmdBuffer[0] = 0xB2;
-        smartGrowerCmdBuffer[1] = onoff;
-        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
+        smartGrowerCmdBuffer[1][0] = 0xB2;
+        smartGrowerCmdBuffer[1][1] = onoff;
+        if (!setPump_sem) {
+          setPump_sem = true;
+          smartGrowerService->smartGrowerSendCmd(&smartGrowerCmdBuffer[1][0], 2);
+          setPump_sem = false;
+        }
       }
     }
   }
 
   //% 
   uint8_t ledIntensity(int type) { 
+    static bool ledIntensity_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (intensityCmdBuffer[0] != 0xB3) {
-          intensityCmdBuffer[0] = 0xB3;
-          intensityCmdBuffer[1] = (uint8_t)type;
-          smartGrowerService->getLedIntensity(intensityCmdBuffer);
-        }
-        // while(intensityCmdBuffer[0] != 0xE3) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (intensityCmdBuffer[0] == 0xE3) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            intensityCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!ledIntensity_sem) {
+          ledIntensity_sem = true;
+          if (intensityCmdBuffer[0] != 0xB3) {
+            intensityCmdBuffer[0] = 0xB3;
+            intensityCmdBuffer[1] = (uint8_t)type;
+            smartGrowerService->getLedIntensity(intensityCmdBuffer);
           }
+          // while(intensityCmdBuffer[0] != 0xE3) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (intensityCmdBuffer[0] == 0xE3) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              intensityCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceIntensity[type] = intensityCmdBuffer[2];
+          ledIntensity_sem = false;
         }
-        deviceIntensity[type] = intensityCmdBuffer[2];
       }
     }
     return deviceIntensity[type];
@@ -126,38 +156,50 @@ namespace asparaSmartGrower {
 
   //% 
   void beep(int longbeep) { 
+    static bool beep_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        smartGrowerCmdBuffer[0] = 0xB4;
-        smartGrowerCmdBuffer[1] = (uint8_t)longbeep;
-        smartGrowerService->smartGrowerSendCmd(smartGrowerCmdBuffer, 2);
+        smartGrowerCmdBuffer[2][0] = 0xB4;
+        smartGrowerCmdBuffer[2][1] = (uint8_t)longbeep;
+        if (!beep_sem) {
+          beep_sem = true;
+          smartGrowerService->smartGrowerSendCmd(&smartGrowerCmdBuffer[2][0], 2);
+          beep_sem = false;
+        }
       }
     }
   }
 
   //% 
   uint8_t indicatorState(int type) {
+    static bool indicatorState_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (indicatorCmdBuffer[0] != 0xB8) {
-          indicatorCmdBuffer[0] = 0xB8;
-          indicatorCmdBuffer[1] = (uint8_t)type;
-          smartGrowerService->getIndicatorState(indicatorCmdBuffer);
-        }
-        // while(indicatorCmdBuffer[0] != 0xE8) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (indicatorCmdBuffer[0] == 0xE8) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            indicatorCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!indicatorState_sem) {
+          indicatorState_sem = true;
+          if (indicatorCmdBuffer[0] != 0xB8) {
+            indicatorCmdBuffer[0] = 0xB8;
+            indicatorCmdBuffer[1] = (uint8_t)type;
+            smartGrowerService->getIndicatorState(indicatorCmdBuffer);
           }
+          // while(indicatorCmdBuffer[0] != 0xE8) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (indicatorCmdBuffer[0] == 0xE8) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              indicatorCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceIndicatorState[type] = (uint8_t)indicatorCmdBuffer[2];
+          indicatorState_sem = false;
         }
-        deviceIndicatorState[type] = (uint8_t)indicatorCmdBuffer[2];
       }
     }
     return deviceIndicatorState[type];
@@ -165,26 +207,32 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t pumpState() {
+    static bool pumpState_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (pumpCmdBuffer[0] != 0xB5) {
-          pumpCmdBuffer[0] = 0xB5;
-          smartGrowerService->getPumpState(pumpCmdBuffer);
-        }
-        // while(pumpCmdBuffer[0] != 0xE5) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (pumpCmdBuffer[0] == 0xE5) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            pumpCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!pumpState_sem) {
+          pumpState_sem = true;
+          if (pumpCmdBuffer[0] != 0xB5) {
+            pumpCmdBuffer[0] = 0xB5;
+            smartGrowerService->getPumpState(pumpCmdBuffer);
           }
+          // while(pumpCmdBuffer[0] != 0xE5) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (pumpCmdBuffer[0] == 0xE5) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              pumpCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          devicePumpState = (uint16_t)pumpCmdBuffer[1];
+          pumpState_sem = false;
         }
-        devicePumpState = (uint16_t)pumpCmdBuffer[1];
       }
     }
     return devicePumpState;
@@ -192,26 +240,32 @@ namespace asparaSmartGrower {
 
   //% 
   float temperature() {
+    static bool temperature_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (tempCmdBuffer[0] != 0xBA) {
-          tempCmdBuffer[0] = 0xBA;
-          smartGrowerService->getTemperature(tempCmdBuffer);
-        }
-        // while(tempCmdBuffer[0] != 0xEA) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (tempCmdBuffer[0] == 0xEA) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            tempCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!temperature_sem) {
+          temperature_sem = true;
+          if (tempCmdBuffer[0] != 0xBA) {
+            tempCmdBuffer[0] = 0xBA;
+            smartGrowerService->getTemperature(tempCmdBuffer);
           }
+          // while(tempCmdBuffer[0] != 0xEA) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (tempCmdBuffer[0] == 0xEA) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              tempCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceTemperature = (uint16_t)tempCmdBuffer[1] + ((uint16_t)tempCmdBuffer[2] << 8);
+          temperature_sem = false;
         }
-        deviceTemperature = (uint16_t)tempCmdBuffer[1] + ((uint16_t)tempCmdBuffer[2] << 8);
       }
     }
     return ((float)deviceTemperature / 100.0);
@@ -219,26 +273,32 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t humidity() {
+    static bool humidity_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (humiCmdBuffer[0] != 0xBB) {
-          humiCmdBuffer[0] = 0xBB;
-          smartGrowerService->getHumidity(humiCmdBuffer);
-        }
-        // while(humiCmdBuffer[0] != 0xEB) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (humiCmdBuffer[0] == 0xEB) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            humiCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!humidity_sem) {
+          humidity_sem = true;
+          if (humiCmdBuffer[0] != 0xBB) {
+            humiCmdBuffer[0] = 0xBB;
+            smartGrowerService->getHumidity(humiCmdBuffer);
           }
+          // while(humiCmdBuffer[0] != 0xEB) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (humiCmdBuffer[0] == 0xEB) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              humiCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceHumidity = humiCmdBuffer[1];
+          humidity_sem = false;
         }
-        deviceHumidity = humiCmdBuffer[1];
       }
     }
     return deviceHumidity;
@@ -246,26 +306,32 @@ namespace asparaSmartGrower {
 
   //% 
   uint16_t lightsensor() {
+    static bool lightsensor_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (lightSensorCmdBuffer[0] != 0xBC) {
-          lightSensorCmdBuffer[0] = 0xBC;
-          smartGrowerService->getLightSensor(lightSensorCmdBuffer);
-        }
-        // while(lightSensorCmdBuffer[0] != 0xEC) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (lightSensorCmdBuffer[0] == 0xEC) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            lightSensorCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!lightsensor_sem) {
+          lightsensor_sem = true;
+          if (lightSensorCmdBuffer[0] != 0xBC) {
+            lightSensorCmdBuffer[0] = 0xBC;
+            smartGrowerService->getLightSensor(lightSensorCmdBuffer);
           }
+          // while(lightSensorCmdBuffer[0] != 0xEC) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (lightSensorCmdBuffer[0] == 0xEC) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              lightSensorCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceLightSensor = (uint16_t)lightSensorCmdBuffer[1] + ((uint16_t)lightSensorCmdBuffer[2] << 8);
+          lightsensor_sem = false;
         }
-        deviceLightSensor = (uint16_t)lightSensorCmdBuffer[1] + ((uint16_t)lightSensorCmdBuffer[2] << 8);
       }
     }
     return deviceLightSensor;
@@ -273,26 +339,32 @@ namespace asparaSmartGrower {
 
   //% 
   uint16_t nutrient() {
+    static bool nutrient_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (nutrientCmdBuffer[0] != 0xBD) {
-          nutrientCmdBuffer[0] = 0xBD;
-          smartGrowerService->getNutrient(nutrientCmdBuffer);
-        }
-        // while(nutrientCmdBuffer[0] != 0xED) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (nutrientCmdBuffer[0] == 0xED) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            nutrientCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!nutrient_sem) {
+          nutrient_sem = true;
+          if (nutrientCmdBuffer[0] != 0xBD) {
+            nutrientCmdBuffer[0] = 0xBD;
+            smartGrowerService->getNutrient(nutrientCmdBuffer);
           }
+          // while(nutrientCmdBuffer[0] != 0xED) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (nutrientCmdBuffer[0] == 0xED) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              nutrientCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceNutrient = (uint16_t)nutrientCmdBuffer[1] + ((uint16_t)nutrientCmdBuffer[2] << 8);
+          nutrient_sem = false;
         }
-        deviceNutrient = (uint16_t)nutrientCmdBuffer[1] + ((uint16_t)nutrientCmdBuffer[2] << 8);
       }
     }
     return deviceNutrient;
@@ -300,26 +372,32 @@ namespace asparaSmartGrower {
 
   //% 
   float battery() {
+    static bool battery_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (batteryCmdBuffer[0] != 0xBE) {
-          batteryCmdBuffer[0] = 0xBE;
-          smartGrowerService->getBattery(batteryCmdBuffer);
-        }
-        // while(batteryCmdBuffer[0] != 0xEE) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (batteryCmdBuffer[0] == 0xEE) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            batteryCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!battery_sem) {
+          battery_sem = true;
+          if (batteryCmdBuffer[0] != 0xBE) {
+            batteryCmdBuffer[0] = 0xBE;
+            smartGrowerService->getBattery(batteryCmdBuffer);
           }
+          // while(batteryCmdBuffer[0] != 0xEE) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (batteryCmdBuffer[0] == 0xEE) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              batteryCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceBattery = (uint16_t)batteryCmdBuffer[1] + ((uint16_t)batteryCmdBuffer[2] << 8);
+          battery_sem = false;
         }
-        deviceBattery = (uint16_t)batteryCmdBuffer[1] + ((uint16_t)batteryCmdBuffer[2] << 8);
       }
     }
     return ((float)deviceBattery / 100.0);
@@ -327,26 +405,32 @@ namespace asparaSmartGrower {
 
   //% 
   uint8_t waterlevel() {
+    static bool waterlevel_sem = false;
+
     if (smartGrowerService != NULL) {
       if (smartGrowerService->IsBleConnected()) {
-        if (waterLevelCmdBuffer[0] != 0xBF) {
-          waterLevelCmdBuffer[0] = 0xBF;
-          smartGrowerService->getWaterLevel(waterLevelCmdBuffer);
-        }
-        // while(waterLevelCmdBuffer[0] != 0xEF) {
-        for(int i = 0; i < timeLimitCount; i++) {
-          if (smartGrowerService->IsBleConnected()) {
-            if (waterLevelCmdBuffer[0] == 0xEF) {
-              i = timeLimitCount;
-            } else {
-              uBit.sleep(100);
-            }
-          } else {
-            waterLevelCmdBuffer[0] = 0;
-            i = timeLimitCount;
+        if (!waterlevel_sem) {
+          waterlevel_sem = true;
+          if (waterLevelCmdBuffer[0] != 0xBF) {
+            waterLevelCmdBuffer[0] = 0xBF;
+            smartGrowerService->getWaterLevel(waterLevelCmdBuffer);
           }
+          // while(waterLevelCmdBuffer[0] != 0xEF) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (waterLevelCmdBuffer[0] == 0xEF) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              waterLevelCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceWaterLevel = waterLevelCmdBuffer[1];
+          waterlevel_sem = false;
         }
-        deviceWaterLevel = waterLevelCmdBuffer[1];
       }
     }
     return deviceWaterLevel;
@@ -357,26 +441,31 @@ namespace asparaSmartGrower {
     struct tm *tm;
     const time_t consttimet = 1698796800; // 2023 11 1 00:00:00
     time_t realtime;
+    static bool getDatetime_sem = false;
 
     if (smartGrowerService != NULL) {
       if (smartGrowerService->deviceTimeMark == 0) {
         if (smartGrowerService->IsBleConnected()) {
-          if (rtcCmdBuffer[0] != 0xB6) {
-            rtcCmdBuffer[0] = 0xB6;
-            smartGrowerService->getRtc(rtcCmdBuffer);
-          }
-          // while(rtcCmdBuffer[0] != 0xE6) {
-          for(int i = 0; i < timeLimitCount; i++) {
-            if (smartGrowerService->IsBleConnected()) {
-              if (rtcCmdBuffer[0] == 0xE6) {
-                i = timeLimitCount;
-              } else {
-                uBit.sleep(100);
-              }
-            } else {
-              rtcCmdBuffer[0] = 0;
-              i = timeLimitCount;
+          if (!getDatetime_sem) {
+            getDatetime_sem = true;
+            if (rtcCmdBuffer[0] != 0xB6) {
+              rtcCmdBuffer[0] = 0xB6;
+              smartGrowerService->getRtc(rtcCmdBuffer);
             }
+            // while(rtcCmdBuffer[0] != 0xE6) {
+            for(int i = 0; i < timeLimitCount; i++) {
+              if (smartGrowerService->IsBleConnected()) {
+                if (rtcCmdBuffer[0] == 0xE6) {
+                  i = timeLimitCount;
+                } else {
+                  uBit.sleep(100);
+                }
+              } else {
+                rtcCmdBuffer[0] = 0;
+                i = timeLimitCount;
+              }
+            }
+            getDatetime_sem = false;
           }
         }
       } else {
