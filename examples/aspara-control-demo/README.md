@@ -1,7 +1,7 @@
 ## Introduction
 * To demo the use of the control blocks of the <B>aspara Smart Grower</B> MakeCode extension.
 
-    <img src="../../pngs/sample_control_prog_blocks.png" width=1076 height=641>
+    <img src="../../pngs/sample_control_prog_blocks.png" width=1010 height=565>
 ## Control actions
 * Press the "A" button would turn on the "RED" led light.
 * Press the "B" button would turn on the "BLUE" led light.
