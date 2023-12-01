@@ -4,7 +4,7 @@
     "dependencies": {
         "core": "*",
         "microphone": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower",
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower@c98316ab07d0fdcfa6675357e8e6e49a12b3458f",
         "bluetooth": "*"
     },
     "files": [
