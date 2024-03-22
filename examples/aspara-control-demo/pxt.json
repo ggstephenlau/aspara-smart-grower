@@ -3,8 +3,8 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#a922706a90651f38f7855a5600ad3b884a617583",
-        "bluetooth": "*"
+        "bluetooth": "*",
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#c81a15e5974b626ffe1356b7411d82ace8384b0f"
     },
     "files": [
         "main.blocks",
@@ -15,7 +15,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "6.0.22",
+        "target": "6.0.25",
         "targetId": "microbit"
     },
     "supportedTargets": [
@@ -26,9 +26,9 @@
         "config": {
             "microbit-dal": {
                 "bluetooth": {
-                    "open": 1,
-                    "whitelist": 0,
-                    "security_level": null
+                    "open": 0,
+                    "whitelist": 1,
+                    "security_level": "SECURITY_MODE_ENCRYPTION_NO_MITM"
                 }
             }
         }
