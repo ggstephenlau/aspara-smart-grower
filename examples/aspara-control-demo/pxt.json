@@ -3,7 +3,7 @@
     "description": "",
     "dependencies": {
         "core": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#a922706a90651f38f7855a5600ad3b884a617583",
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#db9a5588666a06ab2ab86fd56a67f4885ba0c5a4",
         "bluetooth": "*"
     },
     "files": [
@@ -21,16 +21,5 @@
     "supportedTargets": [
         "microbit"
     ],
-    "preferredEditor": "blocksprj",
-    "yotta": {
-        "config": {
-            "microbit-dal": {
-                "bluetooth": {
-                    "open": 1,
-                    "whitelist": 0,
-                    "security_level": null
-                }
-            }
-        }
-    }
+    "preferredEditor": "blocksprj"
 }
