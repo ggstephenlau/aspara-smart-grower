@@ -102,11 +102,11 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 
 ## Sample micro:bit MakeCode Projects using aspara Smart Grower Extension
 #### A very simple project to show the use of the control blocks
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/tree/main/examples/aspara-control-demo</B></I>
+* <I><B>https://github.com/ggstephenlau/aspara-smart-grower/tree/Test/examples/aspara-control-demo</B></I>
 #### A simple project to show the use of the aspara Wireless Planting Sensor values
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/tree/main/examples/aspara-sensor-value-demo</B></I>
+* <I><B>https://github.com/ggstephenlau/aspara-smart-grower/tree/Test/examples/aspara-sensor-value-demo</B></I>
 #### A full cycle of planting controlled by the micro:bit
-* <I><B>https://github.com/growgreenhk/aspara-microbit-makecode-extension/tree/main/examples/aspara-planting-demo</B></I>
+* <I><B>https://github.com/ggstephenlau/aspara-smart-grower/tree/Test/examples/aspara-planting-demo</B></I>
 
 ## Compatibility
 
