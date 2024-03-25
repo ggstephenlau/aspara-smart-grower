@@ -5,7 +5,7 @@
         "core": "*",
         "microphone": "*",
         "bluetooth": "*",
-        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#95fe0cc10918af9e8b167b6102d84d3a9614c2bd"
+        "aspara-smart-grower": "github:ggstephenlau/aspara-smart-grower#4acab6f300c94f9a167c9c75796ff524e3b8b54e"
     },
     "files": [
         "main.blocks",
