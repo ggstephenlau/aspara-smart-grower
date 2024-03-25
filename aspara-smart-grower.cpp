@@ -266,6 +266,8 @@ namespace asparaSmartGrower {
           deviceTemperature = (uint16_t)tempCmdBuffer[1] + ((uint16_t)tempCmdBuffer[2] << 8);
           temperature_sem = false;
         }
+      } else {
+        deviceTemperature = 0;
       }
     }
     return ((float)deviceTemperature / 100.0);
@@ -299,6 +301,8 @@ namespace asparaSmartGrower {
           deviceHumidity = humiCmdBuffer[1];
           humidity_sem = false;
         }
+      } else {
+        deviceHumidity = 0;
       }
     }
     return deviceHumidity;
@@ -332,6 +336,8 @@ namespace asparaSmartGrower {
           deviceLightSensor = (uint16_t)lightSensorCmdBuffer[1] + ((uint16_t)lightSensorCmdBuffer[2] << 8);
           lightsensor_sem = false;
         }
+      } else {
+        deviceLightSensor = 0;
       }
     }
     return deviceLightSensor;
@@ -365,6 +371,8 @@ namespace asparaSmartGrower {
           deviceNutrient = (uint16_t)nutrientCmdBuffer[1] + ((uint16_t)nutrientCmdBuffer[2] << 8);
           nutrient_sem = false;
         }
+      } else {
+        deviceNutrient = 0;
       }
     }
     return deviceNutrient;
@@ -398,6 +406,8 @@ namespace asparaSmartGrower {
           deviceBattery = (uint16_t)batteryCmdBuffer[1] + ((uint16_t)batteryCmdBuffer[2] << 8);
           battery_sem = false;
         }
+      } else {
+        deviceBattery = 0;
       }
     }
     return ((float)deviceBattery / 100.0);
