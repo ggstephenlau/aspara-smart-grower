@@ -41,7 +41,9 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+    ins->ubitBLEConnected = true;
     for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
 
       // Get the CCCD
@@ -72,7 +74,7 @@ void onConnected(MicroBitEvent)
 {
   asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
   if (ins) {
-    ins->ubitBLEConnected = true;
+    // ins->ubitBLEConnected = true;
     ins->connectedTimeMark = system_timer_current_time();
   }
 }
