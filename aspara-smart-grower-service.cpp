@@ -60,9 +60,6 @@ void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
       // Update the internal characteristic flags
       chars[i].setCCCD(value);
     }
-  } else if ( (p_event->evt_id == PM_EVT_CONN_SEC_FAILED) ||
-              (p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_FAILED)) {
-      sd_ble_gap_disconnect(p_event->conn_handle, BLE_HCI_AUTHENTICATION_FAILURE);
   }
 }
 
