@@ -155,6 +155,8 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   // pm_register(static_pm_events); 
   pm_init();
 
+  pm_peers_delete();
+
   memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
 
   // Security parameters to be used for all security procedures.
