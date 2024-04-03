@@ -282,9 +282,6 @@ void asparaSmartGrowerService::smartGrowerStartAdvertise() {
   // Stop any active advertising
   smartGrowerStopAdvertise();
   setName();
-
-  pm_peers_delete();
-  
   // m_advdata _must_ be static / retained!
   static ble_advdata_t m_advdata;
   // m_enc_advdata _must_ be static / retained!
