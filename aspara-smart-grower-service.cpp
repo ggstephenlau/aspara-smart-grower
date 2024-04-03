@@ -41,28 +41,37 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
-    asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-    if (ins) {
-      ins->ubitBLEConnected = true;
-      ins->connectedTimeMark = system_timer_current_time();
-    }
-    for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+  uint32_t evt_id = p_event->evt_id;
 
-      // Get the CCCD
-      ble_gatts_value_t data;
-      memset(&data, 0, sizeof(ble_gatts_value_t));
-      uint16_t value;
-      data.len = 2;
-      data.p_value = (uint8_t*)&value;
-      sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
-      // Update the internal characteristic flags
-      chars[i].setCCCD(value);
-    }
-  } else if (p_event->evt_id == PM_EVT_PEERS_DELETE_SUCCEEDED) {
-    uBit.bleManager.advertise();
-    advertising = true;
+  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  switch(evt_id) {
+    case PM_EVT_CONN_SEC_SUCCEEDED:
+      asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+      if (ins) {
+        ins->ubitBLEConnected = true;
+        ins->connectedTimeMark = system_timer_current_time();
+      }
+      for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+
+        // Get the CCCD
+        ble_gatts_value_t data;
+        memset(&data, 0, sizeof(ble_gatts_value_t));
+        uint16_t value;
+        data.len = 2;
+        data.p_value = (uint8_t*)&value;
+        sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
+        // Update the internal characteristic flags
+        chars[i].setCCCD(value);
+      }
+      break;
+    case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+    case PM_EVT_PEER_DELETE_SUCCEEDED:
+    case PM_EVT_PEERS_DELETE_SUCCEEDED:
+      uBit.bleManager.advertise();
+      advertising = true;
+      break;
+    default:
+      break;
   }
 }
 
