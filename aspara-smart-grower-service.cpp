@@ -198,6 +198,7 @@ void asparaSmartGrowerService::onDisconnect( const microbit_ble_evt_t *p_ble_evt
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDisconnec\r\n");
 #endif
+  pm_peers_delete();
   serviceBLEConnected = false;
   smartGrowerStartAdvertise();
 }
