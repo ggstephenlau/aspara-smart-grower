@@ -60,6 +60,9 @@ void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
       // Update the internal characteristic flags
       chars[i].setCCCD(value);
     }
+  } else if (p_event->evt_id == PM_EVT_PEERS_DELETE_SUCCEEDED) {
+    uBit.bleManager.advertise();
+    advertising = true;
   }
 }
 
@@ -330,8 +333,9 @@ void asparaSmartGrowerService::smartGrowerStartAdvertise() {
   // Restart advertising
   // TODO / FIXME / REVIEW / WARNING: This will start adv using the static handle in the BLE Manager. 
   // Hopefully the same handle is used as the one returned by sd_ble_gap_adv_set_configure
-  uBit.bleManager.advertise();
-  advertising = true;
+  // uBit.bleManager.advertise();
+  // advertising = true;
+  pm_peers_delete();
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nstart advertising !\r\n");
 #endif
