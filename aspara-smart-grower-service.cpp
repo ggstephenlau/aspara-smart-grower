@@ -41,10 +41,8 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  uint32_t evt_id = p_event->evt_id;
-
   // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  switch(evt_id) {
+  switch(p_event->evt_id) {
     case PM_EVT_CONN_SEC_SUCCEEDED:
       asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
       if (ins) {
