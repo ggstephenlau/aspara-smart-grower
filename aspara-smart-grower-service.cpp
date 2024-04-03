@@ -41,10 +41,11 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
+  asparaSmartGrowerService *ins;
   // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
   switch(p_event->evt_id) {
     case PM_EVT_CONN_SEC_SUCCEEDED:
-      asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+      ins = asparaSmartGrowerService::getInstance();
       if (ins) {
         ins->ubitBLEConnected = true;
         ins->connectedTimeMark = system_timer_current_time();
@@ -65,8 +66,11 @@ void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
     case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
     case PM_EVT_PEER_DELETE_SUCCEEDED:
     case PM_EVT_PEERS_DELETE_SUCCEEDED:
-      uBit.bleManager.advertise();
-      advertising = true;
+      ins = asparaSmartGrowerService::getInstance();
+      if (ins) {
+        uBit.bleManager.advertise();
+        ins->advertising = true;
+      }
       break;
     default:
       break;
