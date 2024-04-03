@@ -123,6 +123,7 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   ubitBLEConnected = false;
   rtcCmd = NULL;
   advertising = true;
+  pm_peers_delete();
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
@@ -155,7 +156,7 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   // pm_register(static_pm_events); 
   pm_init();
 
-  pm_peers_delete();
+  // pm_peers_delete();
 
   memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
 
@@ -198,7 +199,7 @@ void asparaSmartGrowerService::onDisconnect( const microbit_ble_evt_t *p_ble_evt
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDisconnec\r\n");
 #endif
-  pm_peers_delete();
+  // pm_peers_delete();
   serviceBLEConnected = false;
   smartGrowerStartAdvertise();
 }
