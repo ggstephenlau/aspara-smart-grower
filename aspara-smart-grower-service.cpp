@@ -64,8 +64,11 @@ void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
       }
       break;
     case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+    case PM_EVT_PEER_DATA_UPDATE_FAILED:
     case PM_EVT_PEER_DELETE_SUCCEEDED:
+    case PM_EVT_PEER_DELETE_FAILED:
     case PM_EVT_PEERS_DELETE_SUCCEEDED:
+    case PM_EVT_PEERS_DELETE_FAILED:
       ins = asparaSmartGrowerService::getInstance();
       if (ins) {
         uBit.bleManager.advertise();
