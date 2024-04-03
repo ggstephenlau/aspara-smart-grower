@@ -123,7 +123,7 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   ubitBLEConnected = false;
   rtcCmd = NULL;
   advertising = true;
-  pm_peers_delete();
+  // pm_peers_delete();
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
