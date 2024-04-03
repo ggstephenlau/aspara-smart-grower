@@ -63,18 +63,18 @@ void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
         chars[i].setCCCD(value);
       }
       break;
-    case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-    case PM_EVT_PEER_DATA_UPDATE_FAILED:
-    case PM_EVT_PEER_DELETE_SUCCEEDED:
-    case PM_EVT_PEER_DELETE_FAILED:
-    case PM_EVT_PEERS_DELETE_SUCCEEDED:
-    case PM_EVT_PEERS_DELETE_FAILED:
-      ins = asparaSmartGrowerService::getInstance();
-      if (ins) {
-        uBit.bleManager.advertise();
-        ins->advertising = true;
-      }
-      break;
+    // case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
+    // case PM_EVT_PEER_DATA_UPDATE_FAILED:
+    // case PM_EVT_PEER_DELETE_SUCCEEDED:
+    // case PM_EVT_PEER_DELETE_FAILED:
+    // case PM_EVT_PEERS_DELETE_SUCCEEDED:
+    // case PM_EVT_PEERS_DELETE_FAILED:
+    //   ins = asparaSmartGrowerService::getInstance();
+    //   if (ins) {
+    //     uBit.bleManager.advertise();
+    //     ins->advertising = true;
+    //   }
+    //   break;
     default:
       break;
   }
@@ -347,9 +347,9 @@ void asparaSmartGrowerService::smartGrowerStartAdvertise() {
   // Restart advertising
   // TODO / FIXME / REVIEW / WARNING: This will start adv using the static handle in the BLE Manager. 
   // Hopefully the same handle is used as the one returned by sd_ble_gap_adv_set_configure
-  // uBit.bleManager.advertise();
-  // advertising = true;
   pm_peers_delete();
+  uBit.bleManager.advertise();
+  advertising = true;
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nstart advertising !\r\n");
 #endif
