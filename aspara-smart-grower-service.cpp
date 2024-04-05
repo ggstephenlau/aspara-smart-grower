@@ -41,42 +41,25 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  asparaSmartGrowerService *ins;
   // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  switch(p_event->evt_id) {
-    case PM_EVT_CONN_SEC_SUCCEEDED:
-      ins = asparaSmartGrowerService::getInstance();
-      if (ins) {
-        ins->ubitBLEConnected = true;
-        ins->connectedTimeMark = system_timer_current_time();
-      }
-      for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+    asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+    if (ins) {
+      ins->ubitBLEConnected = true;
+      ins->connectedTimeMark = system_timer_current_time();
+    }
+    for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
 
-        // Get the CCCD
-        ble_gatts_value_t data;
-        memset(&data, 0, sizeof(ble_gatts_value_t));
-        uint16_t value;
-        data.len = 2;
-        data.p_value = (uint8_t*)&value;
-        sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
-        // Update the internal characteristic flags
-        chars[i].setCCCD(value);
-      }
-      break;
-    // case PM_EVT_PEER_DATA_UPDATE_SUCCEEDED:
-    // case PM_EVT_PEER_DATA_UPDATE_FAILED:
-    // case PM_EVT_PEER_DELETE_SUCCEEDED:
-    // case PM_EVT_PEER_DELETE_FAILED:
-    // case PM_EVT_PEERS_DELETE_SUCCEEDED:
-    // case PM_EVT_PEERS_DELETE_FAILED:
-    //   ins = asparaSmartGrowerService::getInstance();
-    //   if (ins) {
-    //     uBit.bleManager.advertise();
-    //     ins->advertising = true;
-    //   }
-    //   break;
-    default:
-      break;
+      // Get the CCCD
+      ble_gatts_value_t data;
+      memset(&data, 0, sizeof(ble_gatts_value_t));
+      uint16_t value;
+      data.len = 2;
+      data.p_value = (uint8_t*)&value;
+      sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
+      // Update the internal characteristic flags
+      chars[i].setCCCD(value);
+    }
   }
 }
 
@@ -140,7 +123,6 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   ubitBLEConnected = false;
   rtcCmd = NULL;
   advertising = true;
-  // pm_peers_delete();
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
@@ -172,8 +154,6 @@ asparaSmartGrowerService::asparaSmartGrowerService()
 
   // pm_register(static_pm_events); 
   pm_init();
-
-  // pm_peers_delete();
 
   memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
 
@@ -216,7 +196,6 @@ void asparaSmartGrowerService::onDisconnect( const microbit_ble_evt_t *p_ble_evt
 #if DEBUG_ENABLED == 1
   DEBUG("\r\nonDisconnec\r\n");
 #endif
-  // pm_peers_delete();
   serviceBLEConnected = false;
   smartGrowerStartAdvertise();
 }
@@ -347,7 +326,6 @@ void asparaSmartGrowerService::smartGrowerStartAdvertise() {
   // Restart advertising
   // TODO / FIXME / REVIEW / WARNING: This will start adv using the static handle in the BLE Manager. 
   // Hopefully the same handle is used as the one returned by sd_ble_gap_adv_set_configure
-  pm_peers_delete();
   uBit.bleManager.advertise();
   advertising = true;
 #if DEBUG_ENABLED == 1

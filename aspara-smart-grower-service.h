@@ -23,7 +23,6 @@ public:
   time_t deviceTime = 1698796800; // 2023 11 1 00:00:00
   uint32_t deviceTimeMark;
   uint32_t connectedTimeMark;
-  bool advertising;
   static asparaSmartGrowerService *getInstance();
   bool IsBleConnected();
   void setBroadcastName(const char *name);
@@ -98,7 +97,7 @@ private:
 
   char gapName[19];
   char assignName[19];
-  // bool advertising;
+  bool advertising;
   uint8_t status[54];
   uint8_t command[32];
   uint8_t buffer[11][5];
