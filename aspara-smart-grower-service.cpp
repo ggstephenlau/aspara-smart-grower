@@ -74,16 +74,16 @@ asparaSmartGrowerService *asparaSmartGrowerService::getInstance()
     return service;
 }
 
-// void onConnected(MicroBitEvent)
-// {
-//   // asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-//   // if (ins) {
-//   //   ins->ubitBLEConnected = true;
-//   //   ins->connectedTimeMark = system_timer_current_time();
-//   // }
-// }
+void onConnected(MicroBitEvent)
+{
+  // asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+  // if (ins) {
+  //   ins->ubitBLEConnected = true;
+  //   ins->connectedTimeMark = system_timer_current_time();
+  // }
+}
 
-void onPairSuccessful(MicroBitEvent)
+void onPairComplete(MicroBitEvent)
 {
   asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
   if (ins) {
@@ -132,8 +132,8 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   ubitBLEConnected = false;
   rtcCmd = NULL;
   advertising = true;
-  // uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
-  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_PAIR_SUCCESSFUL, onPairSuccessful);
+  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
+  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_PAIR_COMPLETE, onPairComplete);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
   smartGrowerStartAdvertise();
