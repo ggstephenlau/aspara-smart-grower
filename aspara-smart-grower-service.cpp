@@ -41,26 +41,26 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
-    asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-    if (ins) {
-      ins->ubitBLEConnected = true;
-      ins->connectedTimeMark = system_timer_current_time();
-    }
-    for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  // // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  //   asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+  //   if (ins) {
+  //     ins->ubitBLEConnected = true;
+  //     ins->connectedTimeMark = system_timer_current_time();
+  //   }
+  //   for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
 
-      // Get the CCCD
-      ble_gatts_value_t data;
-      memset(&data, 0, sizeof(ble_gatts_value_t));
-      uint16_t value;
-      data.len = 2;
-      data.p_value = (uint8_t*)&value;
-      sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
-      // Update the internal characteristic flags
-      chars[i].setCCCD(value);
-    }
-  }
+  //     // Get the CCCD
+  //     ble_gatts_value_t data;
+  //     memset(&data, 0, sizeof(ble_gatts_value_t));
+  //     uint16_t value;
+  //     data.len = 2;
+  //     data.p_value = (uint8_t*)&value;
+  //     sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
+  //     // Update the internal characteristic flags
+  //     chars[i].setCCCD(value);
+  //   }
+  // }
 }
 
 /**
@@ -74,12 +74,53 @@ asparaSmartGrowerService *asparaSmartGrowerService::getInstance()
     return service;
 }
 
-void onConnected(MicroBitEvent)
+// void onConnected(MicroBitEvent)
+// {
+//   // asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+//   // if (ins) {
+//   //   ins->ubitBLEConnected = true;
+//   //   ins->connectedTimeMark = system_timer_current_time();
+//   // }
+// }
+
+void onPairSuccessful(MicroBitEvent)
 {
-  // asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-  // if (ins) {
-  //   ins->ubitBLEConnected = true;
-  //   ins->connectedTimeMark = system_timer_current_time();
+  asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+  if (ins) {
+    ins->ubitBLEConnected = true;
+    ins->connectedTimeMark = system_timer_current_time();
+  }
+  for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+
+    // Get the CCCD
+    ble_gatts_value_t data;
+    memset(&data, 0, sizeof(ble_gatts_value_t));
+    uint16_t value;
+    data.len = 2;
+    data.p_value = (uint8_t*)&value;
+    sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
+    // Update the internal characteristic flags
+    chars[i].setCCCD(value);
+  }
+  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  // // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  //   asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+  //   if (ins) {
+  //     ins->ubitBLEConnected = true;
+  //     ins->connectedTimeMark = system_timer_current_time();
+  //   }
+  //   for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
+
+  //     // Get the CCCD
+  //     ble_gatts_value_t data;
+  //     memset(&data, 0, sizeof(ble_gatts_value_t));
+  //     uint16_t value;
+  //     data.len = 2;
+  //     data.p_value = (uint8_t*)&value;
+  //     sd_ble_gatts_value_get(p_event->conn_handle, charHandles(i)->cccd, &data); 
+  //     // Update the internal characteristic flags
+  //     chars[i].setCCCD(value);
+  //   }
   // }
 }
 
@@ -123,7 +164,8 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   ubitBLEConnected = false;
   rtcCmd = NULL;
   advertising = true;
-  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
+  // uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
+  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_PAIR_SUCCESSFUL, onPairSuccessful);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
   smartGrowerStartAdvertise();
