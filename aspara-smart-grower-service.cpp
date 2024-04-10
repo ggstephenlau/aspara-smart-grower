@@ -41,8 +41,8 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
     asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
     if (ins) {
       ins->ubitBLEConnected = true;
