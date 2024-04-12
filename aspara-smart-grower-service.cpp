@@ -41,13 +41,13 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
-    // asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-    // if (ins) {
-    //   ins->ubitBLEConnected = true;
-    //   ins->connectedTimeMark = system_timer_current_time();
-    // }
+  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+    asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
+    if (ins) {
+      ins->ubitBLEConnected = true;
+      ins->connectedTimeMark = system_timer_current_time();
+    }
     for(int i=asparaCharControlStatus, idx=0; i<asparaCharCount;i++, idx++) {
 
       // Get the CCCD
@@ -81,15 +81,6 @@ void onConnected(MicroBitEvent)
   //   ins->ubitBLEConnected = true;
   //   ins->connectedTimeMark = system_timer_current_time();
   // }
-}
-
-void onPairComplete(MicroBitEvent)
-{
-  asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
-  if (ins) {
-    ins->ubitBLEConnected = true;
-    ins->connectedTimeMark = system_timer_current_time();
-  }
 }
 
 void onDisconnected(MicroBitEvent)
@@ -133,7 +124,6 @@ asparaSmartGrowerService::asparaSmartGrowerService()
   rtcCmd = NULL;
   advertising = true;
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
-  uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_PAIR_COMPLETE, onPairComplete);
   uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
   // Update advertisements 
   smartGrowerStartAdvertise();
