@@ -41,8 +41,8 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 }
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
-  // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
+  // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
     asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
     if (ins) {
       ins->ubitBLEConnected = true;
@@ -152,28 +152,28 @@ asparaSmartGrowerService::asparaSmartGrowerService()
                       sizeof(command), sizeof(command),
                       microbit_propREAD  | microbit_propNOTIFY | microbit_propWRITE_WITHOUT ); 
 
-  // pm_register(static_pm_events); 
-  pm_init();
+  pm_register(static_pm_events); 
+  // pm_init();
 
-  memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
+  // memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
 
-  // Security parameters to be used for all security procedures.
-  sec_param.bond           = 1;
-  sec_param.mitm           = 0;
-  sec_param.lesc           = 0;
-  sec_param.keypress       = 0;
-  sec_param.io_caps        = 0x03;
-  sec_param.oob            = 0;
-  sec_param.min_key_size   = 7;
-  sec_param.max_key_size   = 16;
-  sec_param.kdist_own.enc = 1;
-  sec_param.kdist_own.id  = 1;
-  sec_param.kdist_peer.enc = 1;
-  sec_param.kdist_peer.id  = 1;
+  // // Security parameters to be used for all security procedures.
+  // sec_param.bond           = 1;
+  // sec_param.mitm           = 0;
+  // sec_param.lesc           = 0;
+  // sec_param.keypress       = 0;
+  // sec_param.io_caps        = 0x03;
+  // sec_param.oob            = 0;
+  // sec_param.min_key_size   = 7;
+  // sec_param.max_key_size   = 16;
+  // sec_param.kdist_own.enc = 1;
+  // sec_param.kdist_own.id  = 1;
+  // sec_param.kdist_peer.enc = 1;
+  // sec_param.kdist_peer.id  = 1;
 
-  err_code = pm_sec_params_set(&sec_param);
+  // err_code = pm_sec_params_set(&sec_param);
 
-  err_code = pm_register(static_pm_events);
+  // err_code = pm_register(static_pm_events);
 }
 
 /**
