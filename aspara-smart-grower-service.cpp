@@ -42,7 +42,8 @@ void asparaSmartGrowerService::static_pm_events(const pm_evt_t* p_event) {
 
 void asparaSmartGrowerService::pm_events(const pm_evt_t* p_event) {
   // if(p_event->evt_id == PM_EVT_PEER_DATA_UPDATE_SUCCEEDED) {
-  if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  // if(p_event->evt_id == PM_EVT_CONN_SEC_SUCCEEDED) {
+  if(p_event->evt_id == PM_EVT_BONDED_PEER_CONNECTED) {
     asparaSmartGrowerService *ins = asparaSmartGrowerService::getInstance();
     if (ins) {
       ins->ubitBLEConnected = true;
@@ -152,8 +153,8 @@ asparaSmartGrowerService::asparaSmartGrowerService()
                       sizeof(command), sizeof(command),
                       microbit_propREAD  | microbit_propNOTIFY | microbit_propWRITE_WITHOUT ); 
 
-  pm_register(static_pm_events); 
-  // pm_init();
+  // pm_register(static_pm_events); 
+  pm_init();
 
   // memset(&sec_param, 0, sizeof(ble_gap_sec_params_t));
 
@@ -173,7 +174,7 @@ asparaSmartGrowerService::asparaSmartGrowerService()
 
   // err_code = pm_sec_params_set(&sec_param);
 
-  // err_code = pm_register(static_pm_events);
+  err_code = pm_register(static_pm_events);
 }
 
 /**
