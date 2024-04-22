@@ -357,19 +357,19 @@ namespace asparaSmartGrower {
             smartGrowerService->getHumidity(humiCmdBuffer);
           }
           // while(humiCmdBuffer[0] != 0xEB) {
-          for(int i = 0; i < 3; i++) {
+          for(int i = 0; i < 10; i++) {
             if (smartGrowerService->IsBleConnected()) {
               if (humiCmdBuffer[0] == 0xEB) {
-                i = 3;
+                i = 10;
               } else {
                 uBit.sleep(1);
-                if (i >= 2) {
+                if (i >= 9) {
                   humiCmdBuffer[1] = 200;
                 }
               }
             } else {
               humiCmdBuffer[0] = 0;
-              i = 3;
+              i = 10;
             }
           }
           deviceHumidity = humiCmdBuffer[1];
