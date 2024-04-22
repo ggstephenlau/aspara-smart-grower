@@ -238,6 +238,8 @@ void asparaSmartGrowerService::onDataWritten( const microbit_ble_evt_write_t *pa
       deviceTimeMark = system_timer_current_time();
     } else if (params->data[0] == 0xE8) {
       memcpy(indicatorCmd, params->data, params->len);
+    } else if (params->data[0] == 0xE9) {
+      memcpy(keyPressedCountCmd, params->data, params->len);
     } else if (params->data[0] == 0xEA) {
       memcpy(tempCmd, params->data, params->len);
     } else if (params->data[0] == 0xEB) {
@@ -474,6 +476,20 @@ void asparaSmartGrowerService::getWaterLevel(uint8_t *cmd) {
 
 void asparaSmartGrowerService::getIndicatorState(uint8_t *cmd) {
   indicatorCmd = cmd;
+  buffer[8][0] = 3;
+  buffer[8][1] = cmd[0];
+  buffer[8][2] = cmd[1];
+  for(int k=0; k < 500; k++) {
+    if (notifyChrValue( asparaCharControlCmd, &buffer[8][0], buffer[8][0])) {
+      break;
+    } else {
+      uBit.sleep(5+2);
+    }
+  }
+}
+
+void asparaSmartGrowerService::getKeyPressedCount(uint8_t *cmd) {
+  keyPressedCountCmd = cmd;
   buffer[8][0] = 3;
   buffer[8][1] = cmd[0];
   buffer[8][2] = cmd[1];
