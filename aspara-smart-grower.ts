@@ -29,6 +29,18 @@ enum INDICATOR_TYPE
   indicator_8 = 7,
 } INDICATOR_TYPE;
 
+enum KEY_TYPE
+{
+  key_1 = 0,
+  key_2 = 1,
+  key_3 = 2,
+  key_4 = 3,
+  key_5 = 4,
+  key_6 = 5,
+  key_7 = 6,
+  key_8 = 7,
+} KEY_TYPE;
+
 /**
  * aspara Smart Grower
  */
@@ -117,6 +129,16 @@ namespace asparaSmartGrower {
   //% weight=65
   //% shim=asparaSmartGrower::indicatorState
   export function indicatorState(indicatortype: INDICATOR_TYPE): number {
+    return 0;
+  }
+
+  /**
+   * Get key pressed count
+   */
+  //% block="key pressed count of |%keytype|"
+  //% weight=63
+  //% shim=asparaSmartGrower::keyPressedCount
+  export function keyPressedCount(keytype: KEY_TYPE): number {
     return 0;
   }
 

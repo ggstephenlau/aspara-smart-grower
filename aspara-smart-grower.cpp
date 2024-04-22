@@ -18,6 +18,7 @@ static uint8_t deviceWaterLevel = 0;
 static Buffer datetime = mkBuffer(NULL, 7);
 static uint8_t deviceIntensity[3] = {0, 0, 0};
 static uint8_t deviceIndicatorState[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+static uint8_t deviceKeyPressedCount[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 static uint8_t devicePumpState = 0;
 
 static uint8_t smartGrowerCmdBuffer[14][4];
@@ -29,6 +30,7 @@ static uint8_t batteryCmdBuffer[3];
 static uint8_t waterLevelCmdBuffer[2];
 static uint8_t rtcCmdBuffer[5];
 static uint8_t indicatorCmdBuffer[3];
+static uint8_t keyPressedCountCmdBuffer[3];
 static uint8_t pumpCmdBuffer[2];
 static uint8_t intensityCmdBuffer[4];
 
@@ -203,6 +205,40 @@ namespace asparaSmartGrower {
       }
     }
     return deviceIndicatorState[type];
+  }
+
+  //% 
+  uint8_t keyPressedCount(int type) {
+    static bool keyPressedCount_sem = false;
+
+    if (smartGrowerService != NULL) {
+      if (smartGrowerService->IsBleConnected()) {
+        if (!keyPressedCount_sem) {
+          keyPressedCount_sem = true;
+          if (keyPressedCountCmdBuffer[0] != 0xB9) {
+            keyPressedCountCmdBuffer[0] = 0xB9;
+            keyPressedCountCmdBuffer[1] = (uint8_t)type;
+            smartGrowerService->getKeyPressedCount(keyPressedCountCmdBuffer);
+          }
+          // while(keyPressedCountCmdBuffer[0] != 0xE9) {
+          for(int i = 0; i < timeLimitCount; i++) {
+            if (smartGrowerService->IsBleConnected()) {
+              if (keyPressedCountCmdBuffer[0] == 0xE9) {
+                i = timeLimitCount;
+              } else {
+                uBit.sleep(100);
+              }
+            } else {
+              keyPressedCountCmdBuffer[0] = 0;
+              i = timeLimitCount;
+            }
+          }
+          deviceKeyPressedCount[type] = (uint8_t)keyPressedCountCmdBuffer[2];
+          keyPressedCount_sem = false;
+        }
+      }
+    }
+    return deviceKeyPressedCount[type];
   }
 
   //% 

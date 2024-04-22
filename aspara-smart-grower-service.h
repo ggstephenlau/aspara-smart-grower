@@ -34,6 +34,7 @@ public:
   void getBattery(uint8_t *cmd);
   void getWaterLevel(uint8_t *cmd);
   void getIndicatorState(uint8_t *cmd);
+  void getKeyPressedCount(uint8_t *cmd);
   void getPumpState(uint8_t *cmd);
   void getRtc(uint8_t *cmd);
   void getLedIntensity(uint8_t *cmd);
@@ -108,6 +109,7 @@ private:
   uint8_t *batteryCmd;
   uint8_t *waterlevelCmd;
   uint8_t *indicatorCmd;
+  uint8_t *keyPressedCountCmd;
   uint8_t *pumpCmd;
   uint8_t *rtcCmd;
   uint8_t *intensityCmd;
