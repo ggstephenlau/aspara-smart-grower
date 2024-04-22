@@ -309,6 +309,41 @@ namespace asparaSmartGrower {
     return ((float)deviceTemperature / 100.0);
   }
 
+  // //% 
+  // uint8_t humidity() {
+  //   static bool humidity_sem = false;
+
+  //   if (smartGrowerService != NULL) {
+  //     if (smartGrowerService->IsBleConnected()) {
+  //       if (!humidity_sem) {
+  //         humidity_sem = true;
+  //         if (humiCmdBuffer[0] != 0xBB) {
+  //           humiCmdBuffer[0] = 0xBB;
+  //           smartGrowerService->getHumidity(humiCmdBuffer);
+  //         }
+  //         // while(humiCmdBuffer[0] != 0xEB) {
+  //         for(int i = 0; i < timeLimitCount; i++) {
+  //           if (smartGrowerService->IsBleConnected()) {
+  //             if (humiCmdBuffer[0] == 0xEB) {
+  //               i = timeLimitCount;
+  //             } else {
+  //               uBit.sleep(100);
+  //             }
+  //           } else {
+  //             humiCmdBuffer[0] = 0;
+  //             i = timeLimitCount;
+  //           }
+  //         }
+  //         deviceHumidity = humiCmdBuffer[1];
+  //         humidity_sem = false;
+  //       }
+  //     } else {
+  //       deviceHumidity = 0;
+  //     }
+  //   }
+  //   return deviceHumidity;
+  // }
+
   //% 
   uint8_t humidity() {
     static bool humidity_sem = false;
@@ -322,16 +357,19 @@ namespace asparaSmartGrower {
             smartGrowerService->getHumidity(humiCmdBuffer);
           }
           // while(humiCmdBuffer[0] != 0xEB) {
-          for(int i = 0; i < timeLimitCount; i++) {
+          for(int i = 0; i < 10; i++) {
             if (smartGrowerService->IsBleConnected()) {
               if (humiCmdBuffer[0] == 0xEB) {
-                i = timeLimitCount;
+                i = 10;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(50);
+                if (i >= 9) {
+                  humiCmdBuffer[1] = 200;
+                }
               }
             } else {
               humiCmdBuffer[0] = 0;
-              i = timeLimitCount;
+              i = 10;
             }
           }
           deviceHumidity = humiCmdBuffer[1];
