@@ -221,16 +221,16 @@ namespace asparaSmartGrower {
             smartGrowerService->getKeyPressedCount(keyPressedCountCmdBuffer);
           }
           // while(keyPressedCountCmdBuffer[0] != 0xE9) {
-          for(int i = 0; i < timeLimitCount; i++) {
+          for(int i = 0; i < 4/*timeLimitCount*/; i++) {  // wait 200ms only
             if (smartGrowerService->IsBleConnected()) {
               if (keyPressedCountCmdBuffer[0] == 0xE9) {
-                i = timeLimitCount;
+                i = 4/*timeLimitCount*/;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(50/*100*/);
               }
             } else {
               keyPressedCountCmdBuffer[0] = 0;
-              i = timeLimitCount;
+              i = 4/*timeLimitCount*/;
             }
           }
           deviceKeyPressedCount[type] = (uint8_t)keyPressedCountCmdBuffer[2];
