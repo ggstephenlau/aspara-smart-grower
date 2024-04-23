@@ -34,7 +34,7 @@ static uint8_t keyPressedCountCmdBuffer[3];
 static uint8_t pumpCmdBuffer[2];
 static uint8_t intensityCmdBuffer[4];
 
-const int timeLimitCount = 15;  // uBit.wait(100), would be 1.5s
+const int timeLimitCount = 60;  // uBit.wait(1), would be 60ms
 
 namespace asparaSmartGrower { 
   //% 
@@ -141,7 +141,7 @@ namespace asparaSmartGrower {
               if (intensityCmdBuffer[0] == 0xE3) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               intensityCmdBuffer[0] = 0;
@@ -192,7 +192,7 @@ namespace asparaSmartGrower {
               if (indicatorCmdBuffer[0] == 0xE8) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               indicatorCmdBuffer[0] = 0;
@@ -221,16 +221,16 @@ namespace asparaSmartGrower {
             smartGrowerService->getKeyPressedCount(keyPressedCountCmdBuffer);
           }
           // while(keyPressedCountCmdBuffer[0] != 0xE9) {
-          for(int i = 0; i < 4/*timeLimitCount*/; i++) {  // wait 200ms only
+          for(int i = 0; i < timeLimitCount; i++) {
             if (smartGrowerService->IsBleConnected()) {
               if (keyPressedCountCmdBuffer[0] == 0xE9) {
-                i = 4/*timeLimitCount*/;
+                i = timeLimitCount;
               } else {
-                uBit.sleep(50/*100*/);
+                uBit.sleep(1);
               }
             } else {
               keyPressedCountCmdBuffer[0] = 0;
-              i = 4/*timeLimitCount*/;
+              i = timeLimitCount;
             }
           }
           deviceKeyPressedCount[type] = (uint8_t)keyPressedCountCmdBuffer[2];
@@ -259,7 +259,7 @@ namespace asparaSmartGrower {
               if (pumpCmdBuffer[0] == 0xE5) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               pumpCmdBuffer[0] = 0;
@@ -292,7 +292,7 @@ namespace asparaSmartGrower {
               if (tempCmdBuffer[0] == 0xEA) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               tempCmdBuffer[0] = 0;
@@ -309,41 +309,6 @@ namespace asparaSmartGrower {
     return ((float)deviceTemperature / 100.0);
   }
 
-  // //% 
-  // uint8_t humidity() {
-  //   static bool humidity_sem = false;
-
-  //   if (smartGrowerService != NULL) {
-  //     if (smartGrowerService->IsBleConnected()) {
-  //       if (!humidity_sem) {
-  //         humidity_sem = true;
-  //         if (humiCmdBuffer[0] != 0xBB) {
-  //           humiCmdBuffer[0] = 0xBB;
-  //           smartGrowerService->getHumidity(humiCmdBuffer);
-  //         }
-  //         // while(humiCmdBuffer[0] != 0xEB) {
-  //         for(int i = 0; i < timeLimitCount; i++) {
-  //           if (smartGrowerService->IsBleConnected()) {
-  //             if (humiCmdBuffer[0] == 0xEB) {
-  //               i = timeLimitCount;
-  //             } else {
-  //               uBit.sleep(100);
-  //             }
-  //           } else {
-  //             humiCmdBuffer[0] = 0;
-  //             i = timeLimitCount;
-  //           }
-  //         }
-  //         deviceHumidity = humiCmdBuffer[1];
-  //         humidity_sem = false;
-  //       }
-  //     } else {
-  //       deviceHumidity = 0;
-  //     }
-  //   }
-  //   return deviceHumidity;
-  // }
-
   //% 
   uint8_t humidity() {
     static bool humidity_sem = false;
@@ -357,19 +322,16 @@ namespace asparaSmartGrower {
             smartGrowerService->getHumidity(humiCmdBuffer);
           }
           // while(humiCmdBuffer[0] != 0xEB) {
-          for(int i = 0; i < 30; i++) {
+          for(int i = 0; i < timeLimitCount; i++) {
             if (smartGrowerService->IsBleConnected()) {
               if (humiCmdBuffer[0] == 0xEB) {
-                i = 30;
+                i = timeLimitCount;
               } else {
                 uBit.sleep(1);
-                if (i >= 29) {
-                  humiCmdBuffer[1] = 200;
-                }
               }
             } else {
               humiCmdBuffer[0] = 0;
-              i = 30;
+              i = timeLimitCount;
             }
           }
           deviceHumidity = humiCmdBuffer[1];
@@ -381,6 +343,44 @@ namespace asparaSmartGrower {
     }
     return deviceHumidity;
   }
+
+  // //% 
+  // uint8_t humidity() {
+  //   static bool humidity_sem = false;
+
+  //   if (smartGrowerService != NULL) {
+  //     if (smartGrowerService->IsBleConnected()) {
+  //       if (!humidity_sem) {
+  //         humidity_sem = true;
+  //         if (humiCmdBuffer[0] != 0xBB) {
+  //           humiCmdBuffer[0] = 0xBB;
+  //           smartGrowerService->getHumidity(humiCmdBuffer);
+  //         }
+  //         // while(humiCmdBuffer[0] != 0xEB) {
+  //         for(int i = 0; i < 30; i++) {
+  //           if (smartGrowerService->IsBleConnected()) {
+  //             if (humiCmdBuffer[0] == 0xEB) {
+  //               i = 30;
+  //             } else {
+  //               uBit.sleep(1);
+  //               if (i >= 29) {
+  //                 humiCmdBuffer[1] = 200;
+  //               }
+  //             }
+  //           } else {
+  //             humiCmdBuffer[0] = 0;
+  //             i = 30;
+  //           }
+  //         }
+  //         deviceHumidity = humiCmdBuffer[1];
+  //         humidity_sem = false;
+  //       }
+  //     } else {
+  //       deviceHumidity = 0;
+  //     }
+  //   }
+  //   return deviceHumidity;
+  // }
 
   //% 
   uint16_t lightsensor() {
@@ -400,7 +400,7 @@ namespace asparaSmartGrower {
               if (lightSensorCmdBuffer[0] == 0xEC) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               lightSensorCmdBuffer[0] = 0;
@@ -435,7 +435,7 @@ namespace asparaSmartGrower {
               if (nutrientCmdBuffer[0] == 0xED) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               nutrientCmdBuffer[0] = 0;
@@ -470,7 +470,7 @@ namespace asparaSmartGrower {
               if (batteryCmdBuffer[0] == 0xEE) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               batteryCmdBuffer[0] = 0;
@@ -505,7 +505,7 @@ namespace asparaSmartGrower {
               if (waterLevelCmdBuffer[0] == 0xEF) {
                 i = timeLimitCount;
               } else {
-                uBit.sleep(100);
+                uBit.sleep(1);
               }
             } else {
               waterLevelCmdBuffer[0] = 0;
@@ -542,7 +542,7 @@ namespace asparaSmartGrower {
                 if (rtcCmdBuffer[0] == 0xE6) {
                   i = timeLimitCount;
                 } else {
-                  uBit.sleep(100);
+                  uBit.sleep(1);
                 }
               } else {
                 rtcCmdBuffer[0] = 0;
