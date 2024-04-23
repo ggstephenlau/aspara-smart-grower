@@ -373,7 +373,7 @@ void asparaSmartGrowerService::smartGrowerSendCmd(uint8_t *cmd, uint8_t len) {
   }
   DEBUG("\r\n");
 #endif
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[0][0], buffer[0][0])) {
       break;
     } else {
@@ -387,7 +387,7 @@ void asparaSmartGrowerService::getLedIntensity(uint8_t *cmd) {
   buffer[1][0] = 3;
   buffer[1][1] = cmd[0];
   buffer[1][2] = cmd[1];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[1][0], buffer[1][0])) {
       break;
     } else {
@@ -400,7 +400,7 @@ void asparaSmartGrowerService::getTemperature(uint8_t *cmd) {
   tempCmd = cmd;
   buffer[2][0] = 2;
   buffer[2][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[2][0], buffer[2][0])) {
       break;
     } else {
@@ -413,7 +413,7 @@ void asparaSmartGrowerService::getHumidity(uint8_t *cmd) {
   humiCmd = cmd;
   buffer[3][0] = 2;
   buffer[3][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[3][0], buffer[3][0])) {
       break;
     } else {
@@ -426,7 +426,7 @@ void asparaSmartGrowerService::getLightSensor(uint8_t *cmd) {
   lightSensorCmd = cmd;
   buffer[4][0] = 2;
   buffer[4][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[4][0], buffer[4][0])) {
       break;
     } else {
@@ -439,7 +439,7 @@ void asparaSmartGrowerService::getNutrient(uint8_t *cmd) {
   nutrientCmd = cmd;
   buffer[5][0] = 2;
   buffer[5][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[5][0], buffer[5][0])) {
       break;
     } else {
@@ -452,7 +452,7 @@ void asparaSmartGrowerService::getBattery(uint8_t *cmd) {
   batteryCmd = cmd;
   buffer[6][0] = 2;
   buffer[6][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[6][0], buffer[6][0])) {
       break;
     } else {
@@ -465,7 +465,7 @@ void asparaSmartGrowerService::getWaterLevel(uint8_t *cmd) {
   waterlevelCmd = cmd;
   buffer[7][0] = 2;
   buffer[7][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[7][0], buffer[7][0])) {
       break;
     } else {
@@ -479,7 +479,7 @@ void asparaSmartGrowerService::getIndicatorState(uint8_t *cmd) {
   buffer[8][0] = 3;
   buffer[8][1] = cmd[0];
   buffer[8][2] = cmd[1];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[8][0], buffer[8][0])) {
       break;
     } else {
@@ -493,7 +493,7 @@ void asparaSmartGrowerService::getKeyPressedCount(uint8_t *cmd) {
   buffer[8][0] = 3;
   buffer[8][1] = cmd[0];
   buffer[8][2] = cmd[1];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[8][0], buffer[8][0])) {
       break;
     } else {
@@ -506,7 +506,7 @@ void asparaSmartGrowerService::getPumpState(uint8_t *cmd) {
   pumpCmd = cmd;
   buffer[9][0] = 2;
   buffer[9][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[9][0], buffer[9][0])) {
       break;
     } else {
@@ -519,7 +519,7 @@ void asparaSmartGrowerService::getRtc(uint8_t *cmd) {
   rtcCmd = cmd;
   buffer[10][0] = 2;
   buffer[10][1] = cmd[0];
-  for(int k=0; k < 500; k++) {
+  for(int k=0; k < 50; k++) {
     if (notifyChrValue( asparaCharControlCmd, &buffer[10][0], buffer[10][0])) {
       break;
     } else {
