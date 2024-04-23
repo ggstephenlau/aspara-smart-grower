@@ -344,44 +344,6 @@ namespace asparaSmartGrower {
     return deviceHumidity;
   }
 
-  // //% 
-  // uint8_t humidity() {
-  //   static bool humidity_sem = false;
-
-  //   if (smartGrowerService != NULL) {
-  //     if (smartGrowerService->IsBleConnected()) {
-  //       if (!humidity_sem) {
-  //         humidity_sem = true;
-  //         if (humiCmdBuffer[0] != 0xBB) {
-  //           humiCmdBuffer[0] = 0xBB;
-  //           smartGrowerService->getHumidity(humiCmdBuffer);
-  //         }
-  //         // while(humiCmdBuffer[0] != 0xEB) {
-  //         for(int i = 0; i < 30; i++) {
-  //           if (smartGrowerService->IsBleConnected()) {
-  //             if (humiCmdBuffer[0] == 0xEB) {
-  //               i = 30;
-  //             } else {
-  //               uBit.sleep(1);
-  //               if (i >= 29) {
-  //                 humiCmdBuffer[1] = 200;
-  //               }
-  //             }
-  //           } else {
-  //             humiCmdBuffer[0] = 0;
-  //             i = 30;
-  //           }
-  //         }
-  //         deviceHumidity = humiCmdBuffer[1];
-  //         humidity_sem = false;
-  //       }
-  //     } else {
-  //       deviceHumidity = 0;
-  //     }
-  //   }
-  //   return deviceHumidity;
-  // }
-
   //% 
   uint16_t lightsensor() {
     static bool lightsensor_sem = false;
