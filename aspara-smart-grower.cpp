@@ -38,13 +38,13 @@ const int timeLimitCount = 60;  // uBit.wait(1), would be 60ms
 
 namespace asparaSmartGrower { 
   //% 
-  void startAsparaSmartGrowerService(int id) { 
+  void startAsparaSmartGrowerService(String id) { 
     if (smartGrowerService == NULL) {
       smartGrowerService = asparaSmartGrowerService::getInstance();
       if (smartGrowerService) {
-        char IdName[] = "GGmB-000000";
+        char IdName[] = "GGmB-......";
 
-        sprintf(&IdName[6], "%05d", id);
+        snprintf(&IdName[6], 6, "%s", id);
         smartGrowerService->setBroadcastName(IdName);
       }
     }
