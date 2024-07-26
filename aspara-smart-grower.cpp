@@ -44,7 +44,7 @@ namespace asparaSmartGrower {
       if (smartGrowerService) {
         char IdName[] = "GGmB-......";
 
-        snprintf(&IdName[6], 6, "%s", id);
+        snprintf(&IdName[6], 6, "%s", id->getUTF8Data());
         smartGrowerService->setBroadcastName(IdName);
       }
     }
