@@ -42,9 +42,9 @@ namespace asparaSmartGrower {
     if (smartGrowerService == NULL) {
       smartGrowerService = asparaSmartGrowerService::getInstance();
       if (smartGrowerService) {
-        char IdName[] = "GGmB-......";
+        char IdName[] = "GGmB-.......";
 
-        snprintf(&IdName[5], 6, "%s", id->getUTF8Data());
+        snprintf(&IdName[5], 7, "%s", id->getUTF8Data());
         smartGrowerService->setBroadcastName(IdName);
       }
     }
