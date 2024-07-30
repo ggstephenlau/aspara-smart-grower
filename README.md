@@ -40,7 +40,7 @@ This is the micro:bit MakeCode Extension for controlling the aspara Smart Grower
 * Enter an ID for this project.
 * E.g.
 
-    <img src="./pngs/proj_microbit_id.png" width=547 height=180/>
+    <img src="./pngs/proj_microbit_id.png" width=675 height=193/>
 ### Control blocks
 * Set LED (red/blue/white) lights intensity (0 - 100)%
 
