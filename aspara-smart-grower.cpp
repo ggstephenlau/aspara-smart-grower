@@ -51,7 +51,7 @@ namespace asparaSmartGrower {
         len = strlen(IdTemp);
         if (len > 0) {
           len = (len > 5) ? 5 : len;
-          for (int i = 10, j = len - 1; (i > 5) || (j >= 0); i--, j--) {
+          for (int i = 10, j = len - 1; (i > 5) && (j >= 0); i--, j--) {
             char c = IdTemp[j];
 
             if ((c >= 0x61) && (c <= 0x7A)) {
