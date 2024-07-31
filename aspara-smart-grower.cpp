@@ -47,22 +47,24 @@ namespace asparaSmartGrower {
         char IdName[] = "GGmB-000000";
 
         // snprintf(&IdName[6], 6, "%s", id->getUTF8Data());
-        snprintf(IdTemp, 20, "%s", id->getUTF8Data());
-        len = strlen(IdTemp);
-        if (len > 0) {
-          len = (len > 5) ? 5 : len;
-          for (int i = 10, j = len - 1; (i > 5) && (j >= 0); i--, j--) {
-            char c = IdTemp[j];
+        // snprintf(IdTemp, 20, "%s", id->getUTF8Data());
+        memcpy(IdTemp, id->getUTF8Data(), 20);
+        sprintf(&IdName[5], "%02X%02X%02X", IdTemp[0], IdTemp[1], IdTemp[2]);
+        // len = strlen(IdTemp);
+        // if (len > 0) {
+        //   len = (len > 5) ? 5 : len;
+        //   for (int i = 10, j = len - 1; (i > 5) && (j >= 0); i--, j--) {
+        //     char c = IdTemp[j];
 
-            if ((c >= 0x61) && (c <= 0x7A)) {
-              c = c & ~0x20;
-            }
-            if (!(((c >= 0x41) && (c <= 0x5A)) || ((c >= 0x30) && (c <= 0x39)))) {
-              c = 0x30;
-            }
-            IdName[i] = c;
-          }
-        }
+        //     if ((c >= 0x61) && (c <= 0x7A)) {
+        //       c = c & ~0x20;
+        //     }
+        //     if (!(((c >= 0x41) && (c <= 0x5A)) || ((c >= 0x30) && (c <= 0x39)))) {
+        //       c = 0x30;
+        //     }
+        //     IdName[i] = c;
+        //   }
+        // }
         smartGrowerService->setBroadcastName(IdName);
       }
     }
