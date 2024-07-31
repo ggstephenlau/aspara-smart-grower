@@ -47,9 +47,8 @@ namespace asparaSmartGrower {
         char IdName[] = "GGmB-000000";
 
         // snprintf(&IdName[6], 6, "%s", id->getUTF8Data());
+        snprintf(&IdName[5], 7, "%s", id->getUTF8Data());
         // snprintf(IdTemp, 20, "%s", id->getUTF8Data());
-        memcpy(IdTemp, id->getUTF8Data(), 20);
-        sprintf(&IdName[5], "%02X%02X%02X", IdTemp[0], IdTemp[1], IdTemp[2]);
         // len = strlen(IdTemp);
         // if (len > 0) {
         //   len = (len > 5) ? 5 : len;
