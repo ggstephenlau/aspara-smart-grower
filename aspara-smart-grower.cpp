@@ -46,24 +46,22 @@ namespace asparaSmartGrower {
         int len;
         char IdName[] = "GGmB-000000";
 
-        // snprintf(&IdName[6], 6, "%s", id->getUTF8Data());
-        snprintf(&IdName[5], 7, "%02X%02X%02X", id->getUTF8DataAt(0)[0], id->getUTF8DataAt(0)[1], id->getUTF8DataAt(1)[0]);
-        // snprintf(IdTemp, 20, "%s", id->getUTF8Data());
-        // len = strlen(IdTemp);
-        // if (len > 0) {
-        //   len = (len > 5) ? 5 : len;
-        //   for (int i = 10, j = len - 1; (i > 5) && (j >= 0); i--, j--) {
-        //     char c = IdTemp[j];
+        snprintf(IdTemp, 20, "%s", id->getUTF8Data());
+        len = strlen(IdTemp);
+        if (len > 0) {
+          len = (len > 5) ? 5 : len;
+          for (int i = 10, j = len - 1; (i > 5) && (j >= 0); i--, j--) {
+            char c = IdTemp[j];
 
-        //     if ((c >= 0x61) && (c <= 0x7A)) {
-        //       c = c & ~0x20;
-        //     }
-        //     if (!(((c >= 0x41) && (c <= 0x5A)) || ((c >= 0x30) && (c <= 0x39)))) {
-        //       c = 0x30;
-        //     }
-        //     IdName[i] = c;
-        //   }
-        // }
+            if ((c >= 0x61) && (c <= 0x7A)) {
+              c = c & ~0x20;  // capitalize
+            }
+            if (!(((c >= 0x41) && (c <= 0x5A)) || ((c >= 0x30) && (c <= 0x39)))) {
+              c = 0x30;
+            }
+            IdName[i] = c;
+          }
+        }
         smartGrowerService->setBroadcastName(IdName);
       }
     }
